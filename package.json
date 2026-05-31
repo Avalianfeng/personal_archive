@@ -1,0 +1,23 @@
+{
+  "name": "renge-shenqian",
+  "private": true,
+  "scripts": {
+    "dev:web": "pnpm --filter @renge-shenqian/web dev",
+    "dev:api": "pnpm --filter @renge-shenqian/api dev",
+    "dev": "concurrently \"pnpm dev:api\" \"pnpm dev:web\"",
+    "build:web": "pnpm --filter @renge-shenqian/web build",
+    "build:api": "pnpm --filter @renge-shenqian/api build",
+    "build": "pnpm build:web && pnpm build:api"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "typescript": "^5.7.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3",
+      "esbuild",
+      "@tsparticles/engine"
+    ]
+  }
+}
