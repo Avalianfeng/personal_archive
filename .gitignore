@@ -5,3 +5,4 @@ dist/
 *.db
 data/
 .DS_Store
+*.tsbuildinfo
