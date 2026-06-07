@@ -14,9 +14,13 @@ interface CompleteResponse {
 }
 
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
+  const method = options?.method ?? 'GET';
+  const needsJsonBody = method !== 'GET' && method !== 'HEAD' && options?.body === undefined;
+
   const res = await fetch(`${BASE_URL}${path}`, {
-    headers: { 'Content-Type': 'application/json' },
     ...options,
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: needsJsonBody ? '{}' : options?.body,
   });
   if (!res.ok) {
     throw new Error(`API error: ${res.status}`);

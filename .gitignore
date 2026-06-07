@@ -6,3 +6,4 @@ dist/
 data/
 .DS_Store
 *.tsbuildinfo
+.codegraph/

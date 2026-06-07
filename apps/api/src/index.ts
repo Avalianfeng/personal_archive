@@ -14,7 +14,7 @@ async function main() {
     credentials: true,
   });
 
-  await app.register(sessionRoutes);
+  await app.register(sessionRoutes, { prefix: '/api' });
 
   app.get('/health', async () => ({ status: 'ok', timestamp: new Date().toISOString() }));
 
