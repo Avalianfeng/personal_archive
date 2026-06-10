@@ -1,13 +1,15 @@
 {
-  "name": "renge-shenqian",
+  "name": "personal-archive",
   "private": true,
   "scripts": {
-    "dev:web": "pnpm --filter @renge-shenqian/web dev",
-    "dev:api": "pnpm --filter @renge-shenqian/api dev",
-    "dev": "concurrently \"pnpm dev:api\" \"pnpm dev:web\"",
-    "build:web": "pnpm --filter @renge-shenqian/web build",
-    "build:api": "pnpm --filter @renge-shenqian/api build",
-    "build": "pnpm build:web && pnpm build:api"
+    "dev:personality": "concurrently \"pnpm dev:personality:api\" \"pnpm dev:personality:web\"",
+    "dev:personality:web": "pnpm --filter @personal-archive/personality-web dev",
+    "dev:personality:api": "pnpm --filter @personal-archive/personality-api dev",
+    "dev:archive": "pnpm --filter @personal-archive/archive-web dev",
+    "dev": "pnpm dev:personality",
+    "build:personality": "pnpm --filter @personal-archive/personality-web build && pnpm --filter @personal-archive/personality-api build",
+    "build:archive": "pnpm --filter @personal-archive/archive-web build",
+    "build": "pnpm build:personality"
   },
   "devDependencies": {
     "concurrently": "^9.1.0",

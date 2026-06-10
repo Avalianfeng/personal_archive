@@ -1,6 +1,10 @@
 # 人格深潜 — 设计系统
 
-> UI 不仅是皮肤，而是探索体验本身。本文档为设计与开发的单源真相。
+> **适用范围**：仅 [`apps/personality/web`](../apps/personality/web) 人格深潜 **immersive** 体验。  
+> 档案整页表单等 form 类 UI 不使用本设计系统。  
+> 项目总架构见 [person-archive-engine.md](./person-archive-engine.md)。
+
+> UI 不仅是皮肤，而是探索体验本身。
 
 ## 品牌
 

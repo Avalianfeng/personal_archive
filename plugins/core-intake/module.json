@@ -1,0 +1,7 @@
+{
+  "id": "core-intake",
+  "name": "通用档案采集",
+  "version": "1.0.0",
+  "uiExperience": "form",
+  "layers": ["objective", "personality"]
+}

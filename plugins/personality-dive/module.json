@@ -1,0 +1,7 @@
+{
+  "id": "personality-dive",
+  "name": "人格深潜",
+  "version": "1.0.0",
+  "uiExperience": "immersive",
+  "layers": ["personality"]
+}

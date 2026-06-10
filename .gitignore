@@ -2,8 +2,11 @@ node_modules/
 dist/
 .env
 .env.local
-*.db
-data/
-.DS_Store
 *.tsbuildinfo
 .codegraph/
+.DS_Store
+
+*.db
+**/data/*.db
+**/data/*.db-shm
+**/data/*.db-wal

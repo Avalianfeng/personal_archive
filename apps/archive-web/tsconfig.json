@@ -1,0 +1,7 @@
+{
+  "extends": "../archive/web/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "../archive/web"
+  },
+  "include": ["src"]
+}

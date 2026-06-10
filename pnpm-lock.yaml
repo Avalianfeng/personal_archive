@@ -15,14 +15,57 @@ importers:
         specifier: ^5.7.0
         version: 5.9.3
 
-  apps/api:
+  apps/archive/web:
+    dependencies:
+      '@personal-archive/engine':
+        specifier: workspace:*
+        version: link:../../../packages/engine
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.28.0
+        version: 6.30.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      zustand:
+        specifier: ^5.0.0
+        version: 5.0.14(@types/react@18.3.29)(react@18.3.1)
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.12
+        version: 18.3.29
+      '@types/react-dom':
+        specifier: ^18.3.1
+        version: 18.3.7(@types/react@18.3.29)
+      '@vitejs/plugin-react':
+        specifier: ^4.3.4
+        version: 4.7.0(vite@6.4.2(@types/node@25.9.1)(jiti@1.21.7)(tsx@4.22.3))
+      autoprefixer:
+        specifier: ^10.4.20
+        version: 10.5.0(postcss@8.5.15)
+      postcss:
+        specifier: ^8.4.49
+        version: 8.5.15
+      tailwindcss:
+        specifier: ^3.4.16
+        version: 3.4.19(tsx@4.22.3)
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      vite:
+        specifier: ^6.0.0
+        version: 6.4.2(@types/node@25.9.1)(jiti@1.21.7)(tsx@4.22.3)
+
+  apps/personality/api:
     dependencies:
       '@fastify/cors':
         specifier: ^10.0.1
         version: 10.1.0
-      '@renge-shenqian/shared':
+      '@personal-archive/personality':
         specifier: workspace:*
-        version: link:../../packages/shared
+        version: link:../../../packages/personality
       better-sqlite3:
         specifier: ^11.7.0
         version: 11.10.0
@@ -46,11 +89,11 @@ importers:
         specifier: ^5.7.0
         version: 5.9.3
 
-  apps/web:
+  apps/personality/web:
     dependencies:
-      '@renge-shenqian/shared':
+      '@personal-archive/personality':
         specifier: workspace:*
-        version: link:../../packages/shared
+        version: link:../../../packages/personality
       '@tsparticles/react':
         specifier: ^3.0.0
         version: 3.0.0(@tsparticles/engine@3.9.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -101,7 +144,19 @@ importers:
         specifier: ^6.0.0
         version: 6.4.2(@types/node@25.9.1)(jiti@1.21.7)(tsx@4.22.3)
 
-  packages/shared:
+  packages/engine:
+    devDependencies:
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+
+  packages/personality:
+    devDependencies:
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+
+  packages/plugin-sdk:
     devDependencies:
       typescript:
         specifier: ^5.7.0
@@ -765,7 +820,7 @@ packages:
 
   '@tsparticles/react@3.0.0':
     resolution: {integrity: sha512-hjGEtTT1cwv6BcjL+GcVgH++KYs52bIuQGW3PWv7z3tMa8g0bd6RI/vWSLj7p//NZ3uTjEIeilYIUPBh7Jfq/Q==}
-    deprecated: tsParticles v4 is out, please upgrade for better performances and more features
+    deprecated: Please update to version 4.1.1
     peerDependencies:
       '@tsparticles/engine': ^3.0.2
       react: '>=16.8.0'
@@ -794,7 +849,7 @@ packages:
 
   '@tsparticles/slim@3.9.1':
     resolution: {integrity: sha512-CL5cDmADU7sDjRli0So+hY61VMbdroqbArmR9Av+c1Fisa5ytr6QD7Jv62iwU2S6rvgicEe9OyRmSy5GIefwZw==}
-    deprecated: tsParticles v4 is out, please upgrade for better performances and more features
+    deprecated: Please update to version 4.1.1
 
   '@tsparticles/updater-color@3.9.1':
     resolution: {integrity: sha512-XGWdscrgEMA8L5E7exsE0f8/2zHKIqnTrZymcyuFBw2DCB6BIV+5z6qaNStpxrhq3DbIxxhqqcybqeOo7+Alpg==}

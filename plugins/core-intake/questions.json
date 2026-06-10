@@ -1,0 +1,118 @@
+[
+  {
+    "id": "basic-name",
+    "section": "basic",
+    "type": "text",
+    "question": "你希望档案里怎么称呼你？",
+    "placeholder": "昵称、姓名或代号",
+    "maxLength": 40,
+    "mapsTo": "basic.displayName",
+    "skippable": true
+  },
+  {
+    "id": "basic-age",
+    "section": "basic",
+    "type": "choice",
+    "question": "你的年龄段是？",
+    "options": [
+      { "key": "under-18", "label": "18 岁以下" },
+      { "key": "18-24", "label": "18–24 岁" },
+      { "key": "25-34", "label": "25–34 岁" },
+      { "key": "35-44", "label": "35–44 岁" },
+      { "key": "45-plus", "label": "45 岁及以上" }
+    ],
+    "mapsTo": "basic.ageRange",
+    "skippable": true
+  },
+  {
+    "id": "basic-location",
+    "section": "basic",
+    "type": "text",
+    "question": "你目前所在的城市是？",
+    "placeholder": "城市或地区（可选）",
+    "maxLength": 60,
+    "mapsTo": "basic.location",
+    "skippable": true
+  },
+  {
+    "id": "social-relationship",
+    "section": "social",
+    "type": "choice",
+    "question": "你目前的感情状态是？",
+    "options": [
+      { "key": "single", "label": "单身" },
+      { "key": "dating", "label": "恋爱中" },
+      { "key": "married", "label": "已婚/稳定伴侣" },
+      { "key": "complicated", "label": "比较复杂，不便归类" },
+      { "key": "prefer-not", "label": "不想说" }
+    ],
+    "mapsTo": "social.relationshipStatus",
+    "skippable": true
+  },
+  {
+    "id": "social-circle",
+    "section": "social",
+    "type": "text",
+    "question": "你的社交圈大致是怎样的？",
+    "placeholder": "例如：小圈子、广泛但浅、以同事为主…",
+    "maxLength": 200,
+    "mapsTo": "social.socialCircle",
+    "skippable": true
+  },
+  {
+    "id": "career-stage",
+    "section": "career",
+    "type": "choice",
+    "question": "你目前的职业阶段是？",
+    "options": [
+      { "key": "student", "label": "学生" },
+      { "key": "early", "label": "职场初期（0–3 年）" },
+      { "key": "mid", "label": "职场中坚（3–10 年）" },
+      { "key": "senior", "label": "资深/管理" },
+      { "key": "transition", "label": "转型/探索中" },
+      { "key": "other", "label": "其他" }
+    ],
+    "mapsTo": "career.careerStage",
+    "skippable": true
+  },
+  {
+    "id": "career-occupation",
+    "section": "career",
+    "type": "text",
+    "question": "你的具体职业或方向是？",
+    "placeholder": "例如：前端工程师、自由插画师…",
+    "maxLength": 80,
+    "mapsTo": "career.occupation",
+    "skippable": true
+  },
+  {
+    "id": "inner-priority",
+    "section": "inner",
+    "type": "text",
+    "question": "最近什么对你最重要？",
+    "placeholder": "工作、关系、健康、创作…",
+    "maxLength": 200,
+    "mapsTo": "inner.currentPriority",
+    "skippable": true
+  },
+  {
+    "id": "inner-decision",
+    "section": "inner",
+    "type": "text",
+    "question": "你通常如何做重要决定？",
+    "placeholder": "直觉、分析、咨询他人…",
+    "maxLength": 200,
+    "mapsTo": "inner.decisionStyle",
+    "skippable": true
+  },
+  {
+    "id": "inner-notes",
+    "section": "inner",
+    "type": "text",
+    "question": "还有什么想写进档案的？",
+    "placeholder": "任何你觉得重要的补充",
+    "maxLength": 300,
+    "mapsTo": "inner.additionalNotes",
+    "skippable": true
+  }
+]
