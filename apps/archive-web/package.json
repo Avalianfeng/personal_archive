@@ -1,9 +1,0 @@
-{
-  "name": "@personal-archive/archive-web-shim",
-  "private": true,
-  "description": "IDE 兼容路径，源码在 ../archive/web",
-  "scripts": {
-    "dev": "pnpm --dir ../archive/web dev",
-    "build": "pnpm --dir ../archive/web build"
-  }
-}

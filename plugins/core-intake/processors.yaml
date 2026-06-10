@@ -1,6 +1,0 @@
-# P3+ 每题 processor 配置将在此定义
-# 示例：
-# - id: career-occupation
-#   processor: ai_extract
-#   mapsTo: objective.career
-#   promptRef: prompts/career-extract.md
