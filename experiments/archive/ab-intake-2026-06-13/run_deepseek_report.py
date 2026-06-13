@@ -24,7 +24,7 @@ CATALOG = ROOT / "02-档案目录.md"
 OUT_DIR = ROOT / "experiments"
 
 API_URL = "https://api.deepseek.com/chat/completions"
-DEFAULT_MODEL = "deepseek-chat"
+DEFAULT_MODEL = "deepseek-v4-pro"
 
 
 def load_env() -> None:
