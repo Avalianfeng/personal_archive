@@ -2,7 +2,7 @@
 
 > 用「人物档案」作载体,表达并验证**我自己对人的分析体系与世界观**。
 > 本仓库只放文字(立意、目录、金样、设计笔记);代码已整体移至 `D:\personal_archive_code`,引擎阶段再启用。
-> **项目共识快照** → [archive/总体状态.md](archive/总体状态.md)
+> **项目共识快照** → [项目状态.md](项目状态.md)
 
 ---
 
@@ -38,7 +38,7 @@ python experiments/run_model_compare.py --models deepseek-chat,deepseek-reasoner
 
 | 文件 | 是什么 |
 | --- | --- |
-| [archive/总体状态.md](archive/总体状态.md) | **项目演变 + 阶段 + 索引**(换模型/隔久必读) |
+| [项目状态.md](项目状态.md) | **项目演变 + 阶段 + 索引**(换模型/隔久必读) |
 | [01-立意与分析体系.md](01-立意与分析体系.md) | 立意、原则、路线 |
 | [02-档案目录.md](02-档案目录.md) | 认识论目录 §0–§13 |
 | [samples/intake-v1.md](samples/intake-v1.md) | L0 输入金样(冻结) |
