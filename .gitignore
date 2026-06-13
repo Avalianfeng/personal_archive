@@ -4,6 +4,9 @@ dist/
 .env.local
 *.tsbuildinfo
 .codegraph/
+__pycache__/
+*.pyc
+experiments/outputs/*.md
 .DS_Store
 
 *.db
