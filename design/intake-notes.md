@@ -41,3 +41,19 @@
 - **extract 模板要点**:转写为第三人称观察句 1–3 句,不粘贴原话;禁诊断标签/MBTI 型结论;禁编造输入中不存在的事实
 - **synthesize 约束**:禁「某某型」标签;娱乐向 Frame→语气轻松并注明;危机 Moment→避免空洞正能量;区分自述与推断
 - **金样驱动**:对照「手填输入 ↔ report-v1 定稿输出」逐条写提示词,直到引擎输出接近金样
+
+---
+
+## 题库展开入口
+
+正式问题库在 [questions/](../questions/README.md):
+
+| 目录 | 用途 |
+| --- | --- |
+| `questions/raw/` | 来源混杂的原始堆积 |
+| `questions/categories/` | 分类地图(现实/情感/决策/状态/自我认知/价值/其他) |
+| `questions/prompts/` | 整理 Agent 提示词与分类原则 |
+| `questions/bank/` | 精选题库(phase-2;archive/inference JSON) |
+| `questions/rejected/` | 淘汰留底 |
+
+整理流程见 [questions/prompts/问题整理提示词.md](../questions/prompts/问题整理提示词.md)。推断层维度树见 [questions/bank/inference/dimensions.md](../questions/bank/inference/dimensions.md)(phase-2 参考)。旧版 JSON 样例见 [archive/questions-v1/draft/](../archive/questions-v1/draft/)。

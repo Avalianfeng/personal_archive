@@ -9,17 +9,15 @@ from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "experiments"))
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
-from llm_client import chat, model_slug  # noqa: E402
+from experiments.llm_client import DEFAULT_DEEPSEEK_MODELS, chat, model_slug  # noqa: E402
 
 PROMPT_PATH = ROOT / "prompts" / "l1-analysis-v1.md"
 INTAKE = ROOT / "samples" / "intake-v1-clean.md"
 CATALOG = ROOT / "02-档案目录.md"
 OUT_DIR = ROOT / "experiments" / "outputs"
-
-DEFAULT_MODELS = ["deepseek-chat", "deepseek-reasoner"]
-
 
 def catalog_summary() -> str:
     lines = []
@@ -48,7 +46,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Multi-model L1 analysis compare")
     parser.add_argument(
         "--models",
-        default=",".join(DEFAULT_MODELS),
+        default=",".join(DEFAULT_DEEPSEEK_MODELS),
         help="Comma-separated model ids",
     )
     parser.add_argument("--provider", default="deepseek", choices=["deepseek", "openai"])

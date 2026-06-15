@@ -1,0 +1,77 @@
+# questions/ · 人物建档问题库
+
+> questions/ 是人物建档**问题库**。当前阶段目标不是推断人格，而是持续**收集、整理和筛选**高质量问题，形成可浏览、可扩展的**问题地图**。
+> **关联**:[design/intake-notes.md](../design/intake-notes.md) · [02-档案目录.md](../02-档案目录.md) · [archive/questions-v1/](../archive/questions-v1/)(旧版骨架)
+
+---
+
+## 当前阶段（初级层）
+
+```text
+量表 / 访谈 / 灵感 / intake 批注
+         ↓ 复制粘贴
+      raw/问题库-NNN.md
+         ↓ Agent + 问题整理提示词
+      categories/*.md
+         ↓ 人工精选（未来）
+      bank/
+         ↓ 淘汰留底
+      rejected/
+```
+
+| 目录 | 职责 |
+| --- | --- |
+| `raw/` | 来源混杂的原始堆积，不要求分类 |
+| `categories/` | 去重、归类、规范化后的分类地图 |
+| `prompts/` | **核心** — 整理 Agent 提示词与分类原则 |
+| `bank/` | 精选题库（现阶段可为空） |
+| `rejected/` | 淘汰留底与踩坑记录 |
+
+**本阶段不做**: `mapsTo`、`evidence_tags`、JSON 定稿、人格分析。
+
+---
+
+## 分类体系
+
+| 文件 | 回答什么 |
+| --- | --- |
+| [现实问题.md](./categories/现实问题.md) | 发生过什么、是什么 |
+| [情感问题.md](./categories/情感问题.md) | 感受什么、关系体验 |
+| [决策问题.md](./categories/决策问题.md) | 怎么选择、怎么判断 |
+| [状态问题.md](./categories/状态问题.md) | 现在怎么样 |
+| [自我认知.md](./categories/自我认知.md) | 怎么看自己 |
+| [价值问题.md](./categories/价值问题.md) | 认为什么重要 |
+| [其他.md](./categories/其他.md) | 暂无法归入以上类 |
+
+诚实度**不是独立分类** — 校验题加 `[校验]` 标签，归入内容所属类。
+
+分类定义见 [prompts/分类原则.md](./prompts/分类原则.md)。
+
+---
+
+## 整理 Agent
+
+将 [prompts/问题整理提示词.md](./prompts/问题整理提示词.md) 中「提示词正文」整段复制到对话，粘贴 `raw/` 内容即可。
+
+Agent 只做：去重 → 归类 → 规范化 → 按格式输出 Markdown。**不分析、不推断。**
+
+---
+
+## 第二阶段（暂不做）
+
+题库积累到 300+ 题后，再启用 JSON 工程化、`mapsTo`、`evidence_tags`、`information_density`。
+
+预留资源：
+
+- [bank/inference/dimensions.md](./bank/inference/dimensions.md) — 推断层维度树（只读参考）
+- [archive/questions-v1/](./archive/questions-v1/) — 旧版 research/draft/inbox 与 JSON 样例
+
+---
+
+## 与现有文件
+
+| 现有 | 关系 |
+| --- | --- |
+| `samples/intake-v1.md` `{}` 批注 | 金样冻结；批注可摘录到 `raw/` |
+| `design/intake-notes.md` | 题面设计压缩索引 |
+| `design/engine.md` | 日后从 `bank/` 导出 `questions.json` |

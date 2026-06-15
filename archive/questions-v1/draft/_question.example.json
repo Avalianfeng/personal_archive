@@ -1,0 +1,27 @@
+{
+  "id": "INF_REL_001",
+  "layer": "inference",
+  "category": "relationship",
+  "dimensions": ["boundary", "conflict"],
+  "mapsTo": ["7.1.3"],
+  "source_type": "self_observation",
+  "source_ref": "inbox/2026-06-14-爽约三次.md",
+  "type": "single_choice",
+  "question": "朋友连续爽约三次，你更可能：",
+  "options": [
+    { "id": "A", "text": "直接问清楚" },
+    { "id": "B", "text": "减少联系" },
+    { "id": "C", "text": "当作偶然" },
+    { "id": "D", "text": "看具体情况" }
+  ],
+  "evidence_tags": {
+    "A": ["主动沟通", "边界表达"],
+    "B": ["回避冲突", "关系撤退"]
+  },
+  "followups": {
+    "A": ["INF_REL_001_A_01"]
+  },
+  "information_density": null,
+  "status": "draft",
+  "notes": "禁止 analysis_hint / 人格结论字段"
+}

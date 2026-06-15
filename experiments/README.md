@@ -25,10 +25,10 @@
 python experiments/run_model_compare.py
 
 # 指定模型(逗号分隔)
-python experiments/run_model_compare.py --models deepseek-chat,deepseek-reasoner
+python experiments/run_model_compare.py --models deepseek-v4-flash,deepseek-v4-pro
 
 # 只写 prompt 不调 API
-python experiments/run_model_compare.py --models deepseek-chat --dry-run
+python experiments/run_model_compare.py --models deepseek-v4-flash --dry-run
 ```
 
 **产出**:`experiments/outputs/l1-{model}-{date}.md`
