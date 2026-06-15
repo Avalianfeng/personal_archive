@@ -1,7 +1,7 @@
 # 引擎架构(Person Archive Engine)
 
 > **功能**:路线 ④「引擎闭环」阶段的架构单源真相——PersonModel、Processor 管道、插件协议。
-> **定位**:立意与路线见 [01-立意与分析体系.md](../01-立意与分析体系.md);阅读结构见 [02-档案目录.md](../02-档案目录.md);本文只管「怎么实现」。
+> **定位**:立意与路线见 [01-立意与分析体系.md](../01-立意与分析体系.md);维度坐标见 [02-维度地图-dimensions.md](../02-维度地图-dimensions.md);阅读结构见 [design/00-档案文件群-index.md](./00-档案文件群-index.md);本文只管「怎么实现」。
 > **代码**:`D:\personal_archive_code`(已移出本仓库,本阶段不动)。
 > **历史**:P0–P2 的实现差距分析与 monorepo 重构清单已完成使命,见归档快照(git `43c6234` 前的 `docs/person-archive-engine.md`)。
 

@@ -1,37 +1,36 @@
-# personal_archive · 个人分析体系(文字仓库)
+# personal_archive · 个人分析体系（文字仓库）
 
-> 用「人物档案」作载体,表达并验证**我自己对人的分析体系与世界观**。
-> 本仓库只放文字(立意、目录、金样、设计笔记);代码已整体移至 `D:\personal_archive_code`,引擎阶段再启用。
-> **项目共识快照** → [项目状态.md](项目状态.md)
+> 用「人物档案」作载体，表达并验证**我自己对人的分析体系与世界观**。
+> 本仓库只放文字（立意、目录、金样、设计笔记）；代码在 `D:\personal_archive_code`。
+>
+> **新 Agent 必读** → [SYNC-CHECKLIST.md](SYNC-CHECKLIST.md) → [01-立意与分析体系.md](01-立意与分析体系.md) → [项目状态.md](项目状态.md)
 
 ---
 
 ## 当前位置
 
 ```text
-L0 输入 intake-v1          ✅ 冻结
-L1 分析 report-v1           ✅ 第二稿(中间层)
-产物 A analysis-report-v1   ⏳ python samples/generate_products.py a
-产物 B person-archive-v1    ⏳ python samples/generate_products.py b(核心档案含§2人生经历)
-多模型 L1 对比              🔧 python experiments/run_model_compare.py
-questions/ 问题库            🔧 raw 堆题 → categories 整理
-动态发掘 / 分题 prompts     ❌ 产物定稿后
-引擎 / Web                  ❌ personal_archive_code
+宪法 01 + SYNC-CHECKLIST     ✅ 2026-06-15
+多文件档案群 persona-v1/     ✅ 8 文件金样已迁移
+维度地图 02 + design/catalog ✅
+L0 输入 intake-v1            ✅ 冻结
+旧 L1/A/B 管线               📦 archive/reference/
+questions/ 问题库            🔧 raw → categories
+动态发掘 / 生成脚本          ❌ 待多用户实验后
+引擎 / Web                   ❌ personal_archive_code
 ```
 
 ---
 
-## 快速命令
+## 快速入口
 
-```bash
-# .env: DEEPSEEK_API_KEY=sk-...
-
-# L1 → 产物 A(分析报告) + 产物 B(人物档案)
-python samples/generate_products.py both
-
-# 同 intake、同 prompt,换模型看 L1 差异
-python experiments/run_model_compare.py --models deepseek-v4-flash,deepseek-v4-pro
-```
+| 想了解什么 | 打开 |
+| --- | --- |
+| 项目是什么、原则、架构 | [01-立意与分析体系.md](01-立意与分析体系.md) |
+| 这个人（金样） | [samples/persona-v1/00-总览与导航-overview.md](samples/persona-v1/00-总览与导航-overview.md) |
+| 看人要哪些维度 | [02-维度地图-dimensions.md](02-维度地图-dimensions.md) |
+| 档案文件怎么组织 | [design/00-档案文件群-index.md](design/00-档案文件群-index.md) |
+| 阶段与演变 | [项目状态.md](项目状态.md) |
 
 ---
 
@@ -39,44 +38,34 @@ python experiments/run_model_compare.py --models deepseek-v4-flash,deepseek-v4-p
 
 | 文件 | 是什么 |
 | --- | --- |
-| [项目状态.md](项目状态.md) | **项目演变 + 阶段 + 索引**(换模型/隔久必读) |
-| [01-立意与分析体系.md](01-立意与分析体系.md) | 立意、原则、路线 |
-| [02-档案目录.md](02-档案目录.md) | 认识论目录 §0–§13 |
-| [questions/README.md](questions/README.md) | **问题库**:raw → categories → bank 精选 |
-| [questions/prompts/问题整理提示词.md](questions/prompts/问题整理提示词.md) | 整理 Agent 提示词(核心) |
-| [questions/bank/inference/dimensions.md](questions/bank/inference/dimensions.md) | 推断层维度树(含 current_state) |
-| [samples/intake-v1.md](samples/intake-v1.md) | L0 输入金样(冻结) |
-| [samples/report-v1.md](samples/report-v1.md) | **L1 分析中间层** |
-| [design/分析报告目录.md](design/分析报告目录.md) | 产物 A 结构(含可选【深度观察】) |
-| [design/核心档案目录.md](design/核心档案目录.md) | 产物 B · 核心档案(§2 人生经历为主体) |
-| [design/时期快照目录.md](design/时期快照目录.md) | 产物 B · 时期快照(动态层) |
-| [design/人物档案目录.md](design/人物档案目录.md) | 产物 B 索引(指向上述两文件) |
-| [samples/generate_products.py](samples/generate_products.py) | L1 → A/B 生成 |
-| [experiments/](experiments/) | 多模型对比实验 |
-| [design/intake-notes.md](design/intake-notes.md) | 提问工程(`{}` 要点) |
-| [design/engine.md](design/engine.md) | 引擎架构(后期) |
+| [SYNC-CHECKLIST.md](SYNC-CHECKLIST.md) | **同步检查清单**（新 Agent 先读） |
+| [01-立意与分析体系.md](01-立意与分析体系.md) | 宪法：立意、原则、文件架构 |
+| [02-维度地图-dimensions.md](02-维度地图-dimensions.md) | 认识论本体 §0–§14 |
+| [design/00-档案文件群-index.md](design/00-档案文件群-index.md) | 阅读顺序与文件群契约 |
+| [design/catalog/](design/catalog/) | 各侧面目录模板 |
+| [samples/persona-v1/](samples/persona-v1/) | **金样档案文件群** |
+| [samples/intake-v1.md](samples/intake-v1.md) | L0 输入（冻结） |
+| [questions/README.md](questions/README.md) | 问题库 |
+| [archive/reference/](archive/reference/) | 旧管线与设计契约 |
+| [experiments/](experiments/) | 多模型 L1 对比（历史 prompt） |
 
 ---
 
-## 三层 + 双产物
+## 数据流（当前）
 
 ```text
-初级层(现在)   raw/ → categories/     问题地图
-精选层(未来)   categories/ → bank/    JSON 工程化(phase-2)
-档案层(事实)   bank/archive/          → 产物 B 核心档案
-推断层(证据)   bank/inference/        → L1 report-v1 → 产物 A + B
+intake-v1 (L0, 冻结)
+       │
+       ▼
+persona-v1/ (8 文件档案群：§1 记录 + §2 解读 + §3 开放问题)
+       ▲
+questions/categories/ ──mapsTo──► 02 维度地图 §14
 ```
 
-流水线:
-
-```text
-intake (L0) → report-v1 (L1 分析) → 产物 A 解释报告 / 产物 B 人物档案
-```
-
-L1 不是给用户看的终稿;产物 A/B 目录在 `design/`,脚本在 `samples/generate_products.py`。
+历史中间层 `archive/reference/report-v1.md` 仅供参考，非活跃流水线。
 
 ---
 
 ## 代码仓库
 
-`D:\personal_archive_code` — 人格深潜、引擎骨架。设计以 `design/engine.md` 为准。
+`D:\personal_archive_code` — 人格深潜、引擎骨架。设计以 [design/engine.md](design/engine.md) 为准。

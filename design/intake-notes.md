@@ -1,7 +1,7 @@
 # 采集题面设计笔记(压缩版)
 
 > **功能**:原 `docs/intake/` 13 个分册占位 + `prompts/` 占位的全部有效信息,压缩为一份。日后进入「题库分册」阶段时,以本文件为起点按章展开。
-> **关联**:[02-档案目录.md](../02-档案目录.md) · [skip-semantics.md](./skip-semantics.md) · [samples/intake-v1.md](../samples/intake-v1.md)(手填卷 `{}` 批注是题面优化的第一素材)
+> **关联**：[02-维度地图-dimensions.md](../02-维度地图-dimensions.md) · [skip-semantics.md](./skip-semantics.md) · [samples/intake-v1.md](../samples/intake-v1.md)(手填卷 `{}` 批注是题面优化的第一素材)
 
 ---
 

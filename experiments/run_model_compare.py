@@ -14,9 +14,9 @@ if str(ROOT) not in sys.path:
 
 from experiments.llm_client import DEFAULT_DEEPSEEK_MODELS, chat, model_slug  # noqa: E402
 
-PROMPT_PATH = ROOT / "prompts" / "l1-analysis-v1.md"
+PROMPT_PATH = ROOT / "archive" / "reference" / "l1-analysis-v1.md"
 INTAKE = ROOT / "samples" / "intake-v1-clean.md"
-CATALOG = ROOT / "02-档案目录.md"
+CATALOG = ROOT / "02-维度地图-dimensions.md"
 OUT_DIR = ROOT / "experiments" / "outputs"
 
 def catalog_summary() -> str:

@@ -11,7 +11,7 @@
 
 ## 迁入条件
 
-从 `categories/` 精选并工程化为 JSON 后迁入:有 id、type、`mapsTo` 指向 [02-档案目录.md](../../../02-档案目录.md) 事实类三级条(如 §3 基础画像、§11 轨迹)。旧流程见 [archive/questions-v1/draft/](../../../archive/questions-v1/draft/)。
+从 `categories/` 精选并工程化为 JSON 后迁入:有 id、type、`mapsTo` 指向 [02-维度地图-dimensions.md](../../../02-维度地图-dimensions.md) 事实类三级条(如 §3 基础画像、§11 轨迹)。旧流程见 [archive/questions-v1/draft/](../../../archive/questions-v1/draft/)。
 ## 命名
 
 `ARC_{主题}_{序号}.json`(如 `ARC_EDU_001.json`)
