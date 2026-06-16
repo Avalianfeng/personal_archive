@@ -1,79 +1,79 @@
 # questions/ · 人物建档问题库
 
-> questions/ 是人物建档**问题库**。当前阶段目标不是推断人格，而是持续**收集、整理和筛选**高质量问题，形成可浏览、可扩展的**问题地图**。
->
-> **关联**：[design/intake-notes.md](../design/intake-notes.md) · [02-维度地图-dimensions.md](../02-维度地图-dimensions.md) · [design/00-档案文件群-index.md](../design/00-档案文件群-index.md)
+> **整理规范**：[整理规范-v0.1.md](./整理规范-v0.1.md) · **格式契约**：[schema/格式规范.md](./schema/格式规范.md) v0.2
+> **关联**：[02-维度地图](../02-维度地图-dimensions.md)（**整理 Agent 禁止读取**）
 
 ---
 
-## 当前阶段（初级层）
+## 数据流
 
 ```text
-量表 / 访谈 / 灵感 / intake 批注
-         ↓ 复制粘贴
-      raw/问题库-NNN.md
-         ↓ Agent + 问题整理提示词
-      categories/*.md
-         ↓ 人工精选（未来）
-      bank/
-         ↓ 淘汰留底
-      rejected/
+question_sources/  →  raw/
+         ↓ 整理 Agent
+      categories/*.md     ← 人类编辑（YAML frontmatter）
+         ↓ parse_questions.py
+      generated/questions.json   ← 程序只读，不提交 Git
+         ↓ 查重 Agent
+      duplicates/
+         ↓
+      rejected/   canonical/（远期）   bank/（500+ 题后）
 ```
 
 | 目录 | 职责 |
 | --- | --- |
-| `raw/` | 来源混杂的原始堆积，不要求分类 |
-| `categories/` | 去重、归类、规范化后的分类地图 |
-| `prompts/` | **核心** — 整理 Agent 提示词与分类原则 |
-| `bank/` | 精选题库（现阶段可为空） |
-| `rejected/` | 淘汰留底与踩坑记录 |
+| `question_sources/` | 来源索引 |
+| `raw/` | 未整理堆积 |
+| `categories/` | **编辑源** — 问题地图（允许重复、变体） |
+| `schema/` | 格式规范 v0.2 + JSON Schema |
+| `scripts/` | `parse_questions.py` |
+| `generated/` | 编译产物（gitignore `*.json`） |
+| `duplicates/` | 查重报告 |
+| `rejected/` | **文件级**淘汰（不进 JSON 的来源） |
+| `canonical/` | 远期标准题（目录表达，不用 status:canonical） |
+| `prompts/` | 整理 / 查重 Agent |
+| `bank/` | 500+ 题后再建设 |
 
-**本阶段不做**：`mapsTo` JSON 定稿、自动写入档案文件。
+---
+
+## 两层生命周期
+
+| | 目录（文件） | metadata（题目） |
+| --- | --- | --- |
+| 管什么 | raw 在哪、是否已整理、来源是否淘汰 | 题是否 active / deprecated |
+| 例子 | `rejected/问题库-004-review.md` | `status: deprecated` |
+
+**categories** = 人类按「问什么」浏览；**tags / type / interaction** = 程序检索。
 
 ---
 
 ## 分类体系
 
-| 文件 | 回答什么 | 对应档案文件 |
-| --- | --- | --- |
-| [现实问题.md](./categories/现实问题.md) | 发生过什么、是什么 | 05、06 |
-| [情感问题.md](./categories/情感问题.md) | 感受什么、关系体验 | 04 |
-| [决策问题.md](./categories/决策问题.md) | 怎么选择、怎么判断 | 03 |
-| [状态问题.md](./categories/状态问题.md) | 现在怎么样 | 07 |
-| [自我认知.md](./categories/自我认知.md) | 怎么看自己 | 01 |
-| [价值问题.md](./categories/价值问题.md) | 认为什么重要 | 02 |
-| [其他.md](./categories/其他.md) | 暂无法归入以上类 | — |
+| 文件 | category slug |
+| --- | --- |
+| [现实问题.md](./categories/现实问题.md) | `real` |
+| [情感问题.md](./categories/情感问题.md) | `emo` |
+| [决策问题.md](./categories/决策问题.md) | `dec` |
+| [状态问题.md](./categories/状态问题.md) | `sta` |
+| [自我认知.md](./categories/自我认知.md) | `self` |
+| [价值问题.md](./categories/价值问题.md) | `val` |
+| [其他.md](./categories/其他.md) | `oth` |
 
-诚实度**不是独立分类** — 校验题加 `[校验]` 标签，归入内容所属类。
-
-分类定义见 [prompts/分类原则.md](./prompts/分类原则.md)。
+见 [prompts/分类原则.md](./prompts/分类原则.md)。
 
 ---
 
-## 整理 Agent
+## Agent 与脚本
 
-将 [prompts/问题整理提示词.md](./prompts/问题整理提示词.md) 中「提示词正文」整段复制到对话，粘贴 `raw/` 内容即可。
+| 步骤 | 工具 |
+| --- | --- |
+| 整理 | [问题整理提示词.md](./prompts/问题整理提示词.md) |
+| 编译 | `python questions/scripts/parse_questions.py` |
+| 查重 | [问题查重提示词.md](./prompts/问题查重提示词.md) |
 
-Agent 只做：去重 → 归类 → 规范化 → 按格式输出 Markdown。**不分析、不推断。**
+整理 Agent：**不分析、不 mapsTo、不读 02**。
 
 ---
 
 ## 第二阶段（暂不做）
 
-题库积累到 300+ 题后，再启用 JSON 工程化、`mapsTo`（对齐 [02 §14](../02-维度地图-dimensions.md)）、`information_density`。
-
-预留资源：
-
-- [bank/inference/dimensions.md](./bank/inference/dimensions.md) — 推断层维度树
-- [archive/questions-v1/](../archive/questions-v1/) — 旧版骨架
-
----
-
-## 与现有文件
-
-| 现有 | 关系 |
-| --- | --- |
-| `samples/intake-v1.md` `{}` 批注 | 金样冻结；批注可摘录到 `raw/` |
-| `samples/persona-v1/` | 金样档案文件群；问题整理目标侧面见上表 |
-| `design/intake-notes.md` | 题面设计压缩索引 |
-| `design/engine.md` | 日后从 `bank/` 导出 `questions.json` |
+500+ 题后：`bank/`、`mapsTo`、引擎 JSON 导出。见 [design/engine.md](../design/engine.md)。

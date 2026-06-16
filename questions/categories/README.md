@@ -1,21 +1,32 @@
 # categories · 分类问题地图
 
-Agent 或人工整理后的**初级层**问题库。按主题分类、可浏览、可继续加工。
+**人类编辑源**。每题 YAML frontmatter 块，编译为 [generated/questions.json](../generated/questions.json)。
 
-## 分类文件
+## 职责
 
-| 文件 | 回答什么 |
-| --- | --- |
-| [现实问题.md](./现实问题.md) | 发生过什么、是什么 |
-| [情感问题.md](./情感问题.md) | 感受什么、关系体验 |
-| [决策问题.md](./决策问题.md) | 怎么选择、怎么判断 |
-| [状态问题.md](./状态问题.md) | 现在怎么样 |
-| [自我认知.md](./自我认知.md) | 怎么看自己 |
-| [价值问题.md](./价值问题.md) | 认为什么重要 |
-| [其他.md](./其他.md) | 暂无法归入以上类 |
+- 问题地图 — 覆盖度优先
+- 允许重复、变体、多来源
+- **浏览轴**：按「这道题问什么」分文件
+- **检索轴**：`tags` / `type` / `interaction`（见 [schema/格式规范.md](../schema/格式规范.md)）
 
-## 格式约定
+## 格式
 
-见 [prompts/问题整理提示词.md](../prompts/问题整理提示词.md) 中的输出契约。
+[schema/格式规范.md](../schema/格式规范.md) v0.2 · [问题整理提示词.md](../prompts/问题整理提示词.md)
 
-精选高质量题迁入 [bank/](../bank/README.md)；淘汰题迁入 [rejected/](../rejected/README.md)。
+改 md 后运行：
+
+```bash
+python questions/scripts/parse_questions.py
+```
+
+**勿用**单独一行的 `---` 作 Markdown 分隔线（会与 frontmatter 混淆）。
+
+## 流向
+
+```text
+raw/ → 整理 Agent → categories/
+     → parse_questions.py → generated/
+     → 查重 → duplicates/
+```
+
+题目 `status: deprecated` 仍保留在 categories；**文件级**淘汰进 [rejected/](../rejected/README.md)。

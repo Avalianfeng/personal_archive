@@ -13,3 +13,6 @@ experiments/outputs/*.md
 **/data/*.db
 **/data/*.db-shm
 **/data/*.db-wal
+
+questions/generated/*.json
+!questions/generated/.gitkeep
