@@ -1,0 +1,120 @@
+# tags · 标准库（机器可读）
+# 人类说明见 tags.md
+# 主题检索标签；不是事实前提（见 prerequisites）
+# 形状：索引随题库按需增长 — 见 registries/README.md；新增须 registry 审核
+
+version: 1
+
+entries:
+  # --- 生活域 ---
+  - id: relationship
+    label: 亲密关系
+  - id: family
+    label: 家庭与亲属
+  - id: childhood
+    label: 童年与成长
+  - id: friendship
+    label: 友谊
+  - id: work
+    label: 工作与职业
+  - id: education
+    label: 教育与学习
+  - id: health
+    label: 健康与疾病
+  - id: military
+    label: 军旅
+  - id: migration
+    label: 迁徙与地域
+
+  # 新增生活域
+  - id: finance
+    label: 财务与经济状况
+  - id: housing
+    label: 居住与住所
+  - id: community
+    label: 社区与邻里
+  - id: leisure
+    label: 休闲与娱乐
+  - id: legal
+    label: 法律与司法
+  - id: technology
+    label: 科技与数字生活
+  - id: arts
+    label: 艺术与创作
+  - id: culture
+    label: 文化与习俗
+  - id: travel
+    label: 旅行与地理移动
+
+  # --- 主题（跨分类检索）---
+  - id: religion
+    label: 宗教与信仰（主题）
+    note: 分类仍按「问什么」入现实/价值/自我认知等；tag 仅作检索
+  - id: politics
+    label: 政治与公共事务（主题）
+  - id: grief
+    label: 丧失与哀悼
+  - id: identity
+    label: 身份认同
+  - id: self_image
+    label: 自我形象
+  - id: social_perception
+    label: 他人如何看待自己
+  - id: values
+    label: 价值观与原则
+  - id: memory
+    label: 记忆与回忆
+  - id: future
+    label: 未来取向
+
+  # 新增主题
+  - id: morality
+    label: 道德与伦理
+  - id: meaning
+    label: 人生意义与目的
+  - id: anxiety
+    label: 焦虑与不安
+  - id: trauma
+    label: 创伤与心理伤痕
+  - id: loneliness
+    label: 孤独与隔离
+  - id: regret
+    label: 悔恨与遗憾
+  - id: forgiveness
+    label: 宽恕与和解
+  - id: sexuality
+    label: 性与性取向
+  - id: gender
+    label: 性别角色与认同
+  - id: class
+    label: 社会阶层与流动
+  - id: race
+    label: 种族与民族
+  - id: justice
+    label: 正义与公平
+  - id: power
+    label: 权力与支配
+  - id: trust
+    label: 信任与背叛
+  - id: betrayal
+    label: 背叛与失信
+  - id: hope
+    label: 希望与愿景
+  - id: fear
+    label: 恐惧与忧虑
+
+  # --- 形式提示（非 mapsTo）---
+  - id: life_story
+    label: 人生叙事类
+  - id: orientation
+    label: 背景定向（人口学/结构）
+
+  # 新增形式
+  - id: reflection
+    label: 反思与内省
+  - id: decision
+    label: 抉择与行动
+  - id: dilemma
+    label: 两难困境
+  - id: turning_point
+    label: 转折点与关键事件

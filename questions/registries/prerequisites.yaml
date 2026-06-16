@@ -1,0 +1,113 @@
+# prerequisites · 标准库（机器可读）
+# 人类说明见 prerequisites.md
+# ⚠ 入库门槛极高：见 prerequisites.md「克制原则」
+# 形状：索引随题库按需增长，不追求写全 — 见 registries/README.md
+
+version: 1
+
+# 隐式前提（不写入题目 frontmatter）
+implicit:
+  - id: can_understand_question
+    label: 被问者具备基础理解与作答能力
+    note: 所有题目的默认前提，无需重复标注
+
+entries:
+  # --- 关系（指称必须存在）---
+  - id: has_current_partner
+    label: 有现任伴侣/配偶
+    establishes: true
+    example: 你和现任伴侣最大的分歧是什么？
+    note: 题面「现任/伴侣/配偶」为必要指称；无则问题不成立
+
+  - id: has_ex_partner
+    label: 有过前任
+    establishes: true
+    example: 你对前任最大的遗憾是什么？
+    note: 题面「前任/ex」为必要指称
+
+  - id: has_children
+    label: 已是父母（有子女）
+    establishes: true
+    example: 成为父母后你最大的变化是什么？
+    note: 题面假定「成为父母」这一状态已发生
+
+  - id: has_siblings
+    label: 有兄弟姐妹
+    establishes: true
+    example: 你和兄弟姐妹之间最久的一次争执是因为什么？
+    note: 题面「兄弟姐妹」为必要指称；「你有兄弟姐妹吗？」本身无 prerequisite
+
+  - id: has_grandparents_met
+    label: 童年时见过祖父母（至少一位）
+    establishes: true
+    example: 哪位祖父母对你影响最大？
+    note: 题面特指某位/祖父母经历；从未见过则指称失败
+
+  # --- 经历（题面假定该段人生已发生）---
+  - id: has_military_experience
+    label: 曾服役（军旅经历）
+    establishes: true
+    example: 服役期间哪件事改变了你对权威的看法？
+    note: 题面假定「服役期间」；未服役则时空指称不存在
+
+  - id: is_parent
+    alias_of: has_children
+
+# --- 工作与职业（题面特指具体雇佣关系或具体工作事件）---
+  - id: has_current_job
+    label: 当前有受雇工作（有明确雇主/公司）
+    establishes: true
+    example: 你在当前公司面临的最大挑战是什么？
+    note: 题面特指"当前公司/现任老板/当前团队"；无业/自由职业无特定雇主则指称不存在
+
+  - id: has_work_experience
+    label: 有过正式工作经历（含全职/兼职/实习）
+    establishes: true
+    example: 你的第一份工作教会了你什么？
+    note: 题面特指"第一份工作/上一份工作"等具体工作事件；从未工作过则"第一份工作"指称失败（区别于泛指的"职业生涯"）
+
+  # --- 婚恋与家庭（超越"有无伴侣"的额外指称）---
+  - id: has_been_married
+    label: 曾结过婚（含已离异/丧偶）
+    establishes: true
+    example: 你的婚礼当天最让你意外的是什么？
+    note: 题面特指"婚礼/婚姻生活"；从未结婚则"婚礼当天"时空指称不存在（区别于"现任伴侣"）
+
+  - id: has_in_laws
+    label: 有姻亲（伴侣的父母/继父母等）
+    establishes: true
+    example: 你的岳父母（或公婆）对你的生活方式有什么看法？
+    note: 题面特指"伴侣父母"；未婚或伴侣父母不在/从未建立关系则指称失败
+
+  # --- 居住与社交（特定角色指称）---
+  - id: has_roommate
+    label: 现在或曾经有过室友（非亲属合住）
+    establishes: true
+    example: 你遇到过的最糟糕的室友是什么样的？
+    note: 题面特指"室友"；始终独居或无合住经历则指称失败
+
+  # --- 宠物与资产（具体所有物）---
+  - id: has_pets
+    label: 现在或曾经养过宠物
+    establishes: true
+    example: 你的宠物做过最让你感动的一件事是什么？
+    note: 题面特指"宠物/养宠经历"；从未养过则指称失败
+
+  - id: has_owned_a_vehicle
+    label: 拥有过机动车（汽车/摩托车等）
+    establishes: true
+    example: 你的第一辆车是什么品牌的？为什么选它？
+    note: 题面特指"第一辆车/自己的车"；从未拥有则指称失败
+
+  # --- 管理与教育（特定经历事件）---
+  - id: has_employees
+    label: 在工作中管理过团队或有下属
+    establishes: true
+    example: 你第一次管理下属时犯过最大的错误是什么？
+    note: 题面特指"下属/管理经历"；从未带过团队则指称失败
+
+  - id: has_studied_abroad
+    label: 有过海外留学/交换经历（至少一学期）
+    establishes: true
+    example: 留学期间哪件事让你重新理解了"文化差异"？
+    note: 题面特指"留学期间"；无此经历则具体时间段指称不存在（区别于泛指的"国外旅行"）

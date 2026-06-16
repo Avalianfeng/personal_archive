@@ -21,6 +21,7 @@ QUESTIONS_DIR = Path(__file__).resolve().parent.parent
 CATEGORIES_DIR = QUESTIONS_DIR / "categories"
 GENERATED_DIR = QUESTIONS_DIR / "generated"
 REJECTED_DIR = QUESTIONS_DIR / "rejected"
+REGISTRIES_DIR = QUESTIONS_DIR / "registries"
 
 FILE_TO_CATEGORY: dict[str, tuple[str, str]] = {
     "现实问题.md": ("real", "现实问题"),
@@ -131,6 +132,87 @@ def parse_options(body_lines: list[str]) -> tuple[str, list[dict[str, str]] | No
     return text, (options if options else None), scale_note
 
 
+def load_registry(name: str) -> dict:
+    path = REGISTRIES_DIR / f"{name}.yaml"
+    if not path.exists():
+        raise FileNotFoundError(f"Registry not found: {path}")
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise ValueError(f"{path}: registry root must be a mapping")
+
+    entries = data.get("entries") or []
+    ids: set[str] = set()
+    aliases: dict[str, str] = {}
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        entry_id = entry.get("id")
+        if not entry_id:
+            continue
+        alias_of = entry.get("alias_of")
+        if alias_of:
+            aliases[str(entry_id)] = str(alias_of)
+            ids.add(str(entry_id))
+        else:
+            ids.add(str(entry_id))
+
+    return {
+        "version": data.get("version"),
+        "ids": ids,
+        "aliases": aliases,
+        "implicit": [
+            str(x["id"])
+            for x in (data.get("implicit") or [])
+            if isinstance(x, dict) and x.get("id")
+        ],
+        "raw": data,
+    }
+
+
+def load_registries() -> dict:
+    prereq = load_registry("prerequisites")
+    tags = load_registry("tags")
+    return {
+        "prerequisites": prereq,
+        "tags": tags,
+        "valid_prerequisite_ids": prereq["ids"] | set(prereq["aliases"].values()),
+        "valid_tag_ids": tags["ids"],
+    }
+
+
+def validate_registry_refs(
+    questions: list[dict], registries: dict, *, strict: bool = False,
+) -> dict:
+    unknown_prerequisites: list[dict] = []
+    unknown_tags: list[dict] = []
+
+    for q in questions:
+        for p in q.get("prerequisites") or []:
+            if p not in registries["valid_prerequisite_ids"]:
+                unknown_prerequisites.append({
+                    "id": q["id"], "prerequisite": p, "source_file": q["source_file"],
+                })
+        for t in q.get("tags") or []:
+            if t not in registries["valid_tag_ids"]:
+                unknown_tags.append({
+                    "id": q["id"], "tag": t, "source_file": q["source_file"],
+                })
+
+    if strict and (unknown_prerequisites or unknown_tags):
+        lines = []
+        for item in unknown_prerequisites:
+            lines.append(
+                f"{item['source_file']} {item['id']}: unknown prerequisite '{item['prerequisite']}'",
+            )
+        for item in unknown_tags:
+            lines.append(
+                f"{item['source_file']} {item['id']}: unknown tag '{item['tag']}'",
+            )
+        raise ValueError("\n".join(lines))
+
+    return {"unknown_prerequisites": unknown_prerequisites, "unknown_tags": unknown_tags}
+
+
 def normalize_frontmatter(meta: dict, file_slug: str, file_label: str, source_file: str) -> dict:
     errors: list[str] = []
 
@@ -178,6 +260,14 @@ def normalize_frontmatter(meta: dict, file_slug: str, file_label: str, source_fi
     else:
         errors.append(f"{source_file} {qid}: tags must be a list")
 
+    prerequisites = meta.get("prerequisites")
+    if prerequisites is None:
+        prerequisites_out = None
+    elif isinstance(prerequisites, list):
+        prerequisites_out = [str(p) for p in prerequisites if str(p).strip()]
+    else:
+        errors.append(f"{source_file} {qid}: prerequisites must be a list")
+
     related = meta.get("related")
     if related is None:
         related_out = None
@@ -201,6 +291,7 @@ def normalize_frontmatter(meta: dict, file_slug: str, file_label: str, source_fi
         "interaction": interaction,
         "source": empty_to_none(meta.get("source")),
         "tags": tags_out if tags is not None else None,
+        "prerequisites": prerequisites_out if prerequisites is not None else None,
         "depth": depth,
         "validation": validation,
         "related": related_out,
@@ -331,11 +422,15 @@ def build_duplicate_hints(questions: list[dict]) -> dict:
     }
 
 
-def build_stats(questions: list[dict], include_deprecated: bool) -> dict:
+def build_stats(
+    questions: list[dict],
+    include_deprecated: bool,
+    registry_audit: dict | None = None,
+) -> dict:
     active = [q for q in questions if q["status"] in ("active", "candidate")]
     pool = questions if include_deprecated else active
 
-    return {
+    stats = {
         "total": len(pool),
         "total_including_deprecated": len(questions),
         "by_category": dict(Counter(q["category"] for q in pool)),
@@ -345,7 +440,13 @@ def build_stats(questions: list[dict], include_deprecated: bool) -> dict:
         "by_type": dict(Counter(q["type"] for q in pool)),
         "missing_uid": [q["id"] for q in questions if not q.get("uid")],
         "id_gaps": compute_id_gaps(questions),
+        "with_prerequisites": sum(1 for q in pool if q.get("prerequisites")),
+        "with_tags": sum(1 for q in pool if q.get("tags")),
     }
+    if registry_audit is not None:
+        stats["unknown_prerequisites"] = registry_audit["unknown_prerequisites"]
+        stats["unknown_tags"] = registry_audit["unknown_tags"]
+    return stats
 
 
 def audit_dyadic(questions: list[dict]) -> list[dict]:
@@ -474,7 +575,22 @@ def load_all_questions() -> list[dict]:
     return all_questions
 
 
-def write_outputs(questions: list[dict], include_deprecated: bool) -> None:
+def write_registries_snapshot(registries: dict) -> None:
+    snapshot = {
+        "prerequisites": registries["prerequisites"]["raw"],
+        "tags": registries["tags"]["raw"],
+    }
+    (GENERATED_DIR / "registries.json").write_text(
+        json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n", encoding="utf-8",
+    )
+
+
+def write_outputs(
+    questions: list[dict],
+    include_deprecated: bool,
+    registries: dict | None = None,
+    registry_audit: dict | None = None,
+) -> None:
     GENERATED_DIR.mkdir(parents=True, exist_ok=True)
 
     export = questions if include_deprecated else [
@@ -485,13 +601,20 @@ def write_outputs(questions: list[dict], include_deprecated: bool) -> None:
         json.dumps(export, ensure_ascii=False, indent=2) + "\n", encoding="utf-8",
     )
     (GENERATED_DIR / "stats.json").write_text(
-        json.dumps(build_stats(questions, include_deprecated), ensure_ascii=False, indent=2) + "\n",
+        json.dumps(
+            build_stats(questions, include_deprecated, registry_audit),
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
         encoding="utf-8",
     )
     (GENERATED_DIR / "duplicate_hints.json").write_text(
         json.dumps(build_duplicate_hints(export), ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
+    if registries is not None:
+        write_registries_snapshot(registries)
 
 
 def remove_questions_by_ids_v2(ids: set[str]) -> list[dict]:
@@ -555,7 +678,14 @@ def main() -> int:
     parser.add_argument("--include-deprecated", action="store_true", help="Include deprecated in questions.json")
     parser.add_argument("--audit-dyadic", action="store_true", help="Print dyadic audit and exit")
     parser.add_argument("--prune-dyadic", action="store_true", help="Move dyadic questions to rejected/")
+    parser.add_argument(
+        "--strict-registry",
+        action="store_true",
+        help="Fail on unknown prerequisites/tags (default: warn in stats.json)",
+    )
     args = parser.parse_args()
+
+    registries = load_registries()
 
     if args.prune_dyadic:
         questions = load_all_questions()
@@ -572,7 +702,10 @@ def main() -> int:
             if n:
                 print(f"Wrote {n} uid(s) to categories")
         questions = load_all_questions()
-        write_outputs(questions, args.include_deprecated)
+        registry_audit = validate_registry_refs(
+            questions, registries, strict=args.strict_registry,
+        )
+        write_outputs(questions, args.include_deprecated, registries, registry_audit)
         print(f"Wrote {len([q for q in questions if q['status'] in ('active','candidate')])} active question(s)")
         return 0
 
@@ -589,11 +722,18 @@ def main() -> int:
         print(f"\n{len(hits)} dyadic candidate(s)", file=sys.stderr)
         return 0
 
-    write_outputs(questions, args.include_deprecated)
+    registry_audit = validate_registry_refs(
+        questions, registries, strict=args.strict_registry,
+    )
+    write_outputs(questions, args.include_deprecated, registries, registry_audit)
     active = len([q for q in questions if q["status"] in ("active", "candidate")])
     print(f"Wrote {active} question(s) to {GENERATED_DIR / 'questions.json'}")
     print(f"Wrote stats → {GENERATED_DIR / 'stats.json'}")
     print(f"Wrote duplicate_hints → {GENERATED_DIR / 'duplicate_hints.json'}")
+    print(f"Wrote registries → {GENERATED_DIR / 'registries.json'}")
+    n_unknown = len(registry_audit["unknown_prerequisites"]) + len(registry_audit["unknown_tags"])
+    if n_unknown:
+        print(f"Registry warnings: {n_unknown} unknown reference(s) — see stats.json", file=sys.stderr)
     return 0
 
 

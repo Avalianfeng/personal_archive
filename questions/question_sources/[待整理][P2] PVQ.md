@@ -4,7 +4,7 @@
 | --- | --- |
 | 类型 | 量表 |
 | 语言 | en |
-| raw 路径 | [../raw/pending/问题库-003.md](../raw/pending/问题库-003.md) |
+| raw 路径 | [../raw/pending/[P2] 问题库-003.md](../raw/pending/%5BP2%5D%20问题库-003.md) |
 | 整理优先级 | **P2** |
 | 状态 | 待整理 |
 

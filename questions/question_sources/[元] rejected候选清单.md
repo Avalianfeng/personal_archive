@@ -10,8 +10,8 @@
 | raw 文件 | 问题 | 建议处置 |
 | --- | --- | --- |
 | [问题库-004.md](../raw/processed/问题库-004.md) | PANAS+SWLS 混杂残缺 | ✅ rejected review |
-| [问题库-002.md](../raw/pending/问题库-002.md) | 仅标题，空文件 | 跳过 |
-| [other_info.md](../raw/pending/other_info.md) | 纯链接 | 见 pending-links |
+| [[批次] 问题库-002.md](../raw/pending/%5B批次%5D%20问题库-002.md) | 仅标题，空文件 | 跳过 |
+| [[元] other_info.md](../raw/pending/%5B元%5D%20other_info.md) | 纯链接 | 见 [元] 待采集链接池 |
 
 ## Phase 1 首件建议
 

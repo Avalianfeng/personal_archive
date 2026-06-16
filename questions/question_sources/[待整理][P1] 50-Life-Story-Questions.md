@@ -4,7 +4,7 @@
 | --- | --- |
 | 类型 | 叙事访谈清单 |
 | 语言 | 双语（en + zh） |
-| raw 路径 | [../raw/pending/50 Life Story Interview Questions.md](../raw/pending/50%20Life%20Story%20Interview%20Questions.md) |
+| raw 路径 | [../raw/pending/[P1] 50 Life Story Interview Questions.md](../raw/pending/%5BP1%5D%2050%20Life%20Story%20Interview%20Questions.md) |
 | 整理优先级 | **P1** |
 | 状态 | 待整理 |
 
@@ -20,4 +20,4 @@
 
 ## 备注
 
-与 [McAdams-Life-Story.md](./McAdams-Life-Story.md) 同属 P1，可同一批次整理后统一查重。
+与 [[待整理][P1] McAdams-Life-Story](./[待整理][P1]%20McAdams-Life-Story.md) 同属 P1，可同一批次整理后统一查重。

@@ -4,7 +4,7 @@
 | --- | --- |
 | 类型 | 关系访谈（研究协议） |
 | 语言 | en |
-| raw 路径 | [../raw/pending/ADULT ATTACHMENT INTERVIEW PROTOCOL.md](../raw/pending/ADULT%20ATTACHMENT%20INTERVIEW%20PROTOCOL.md) |
+| raw 路径 | [../raw/pending/[P1] ADULT ATTACHMENT INTERVIEW PROTOCOL.md](../raw/pending/%5BP1%5D%20ADULT%20ATTACHMENT%20INTERVIEW%20PROTOCOL.md) |
 | 整理优先级 | **P1** |
 | 状态 | 待整理 |
 

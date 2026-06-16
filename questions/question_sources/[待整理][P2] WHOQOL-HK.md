@@ -4,7 +4,7 @@
 | --- | --- |
 | 类型 | 量表 |
 | 语言 | 粤语 / 繁体 |
-| raw 路径 | [../raw/pending/Cantonese_QOL112_SelfAdm Dec03.PDF](../raw/pending/Cantonese_QOL112_SelfAdm%20Dec03.PDF) |
+| raw 路径 | [../raw/pending/[P2] Cantonese_QOL112_SelfAdm Dec03.PDF](../raw/pending/%5BP2%5D%20Cantonese_QOL112_SelfAdm%20Dec03.PDF) |
 | 整理优先级 | **P2** |
 | 状态 | 待整理 |
 

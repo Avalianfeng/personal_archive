@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://personal-archive.local/questions/question.schema.json",
   "title": "Question",
-  "description": "Compiled question object from categories/*.md (v0.3)",
+  "description": "Compiled question object from categories/*.md (v0.4)",
   "type": "object",
   "required": [
     "uid",
@@ -33,6 +33,10 @@
     "type": {
       "type": "string",
       "enum": ["open", "single", "multi", "scale", "sort", "fill", "agreement"]
+    },
+    "prerequisites": {
+      "type": ["array", "null"],
+      "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" }
     },
     "interaction": {
       "type": ["string", "null"],

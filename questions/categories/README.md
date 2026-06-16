@@ -7,11 +7,11 @@
 - 问题地图 — 覆盖度优先
 - 允许重复、变体、多来源
 - **浏览轴**：按「这道题问什么」分文件
-- **检索轴**：`tags` / `type` / `interaction`（见 [schema/格式规范.md](../schema/格式规范.md)）
+- **检索轴**：`tags` / `prerequisites` / `type` / `interaction`（见 [schema/格式规范.md](../schema/格式规范.md)）
 
 ## 格式
 
-[schema/格式规范.md](../schema/格式规范.md) v0.2 · [问题整理提示词.md](../prompts/问题整理提示词.md)
+[schema/格式规范.md](../schema/格式规范.md) v0.4 · [registries/](../registries/README.md) · [问题整理提示词.md](../prompts/问题整理提示词.md)
 
 改 md 后运行：
 

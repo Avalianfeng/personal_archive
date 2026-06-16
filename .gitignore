@@ -1,18 +1,65 @@
+# ── 通用开发 ──────────────────────────────────
 node_modules/
 dist/
 .env
 .env.local
 *.tsbuildinfo
-.codegraph/
 __pycache__/
 *.pyc
-experiments/outputs/*.md
-.DS_Store
+.venv/
+venv/
+*.log
 
+# ── IDE / 系统 ────────────────────────────────
+.codegraph/
+.cursor/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ── 数据库 / 索引 ─────────────────────────────
 *.db
+*.db-shm
+*.db-wal
 **/data/*.db
 **/data/*.db-shm
 **/data/*.db-wal
 
-questions/generated/*.json
+# ── questions · 编译产物 ──────────────────────
+questions/generated/**
+!questions/generated/README.md
 !questions/generated/.gitkeep
+
+# ── questions · raw 工作队列（只留目录说明）──
+# 根目录遗留文件（应迁入 pending/）
+questions/raw/*
+!questions/raw/README.md
+!questions/raw/pending/
+!questions/raw/processed/
+
+questions/raw/pending/**
+!questions/raw/pending/README.md
+
+questions/raw/processed/**
+!questions/raw/processed/README.md
+
+# ── questions · 查重报告（只留模板）──────────
+questions/duplicates/**
+!questions/duplicates/README.md
+!questions/duplicates/_template-report.md
+
+# ── questions · 远期占位目录 ──────────────────
+questions/canonical/**
+!questions/canonical/README.md
+
+questions/bank/archive/**
+!questions/bank/archive/README.md
+
+# bank/inference 现阶段只留 README + dimensions.md
+questions/bank/inference/**
+!questions/bank/inference/README.md
+!questions/bank/inference/dimensions.md
+
+# ── experiments · 实验产出 ───────────────────
+experiments/outputs/**
+!experiments/outputs/.gitkeep
