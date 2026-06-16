@@ -22,7 +22,7 @@
 
 | 文件 | 说明 |
 | --- | --- |
-| [report-v1.md](./report-v1.md) | L1 分析中间层（历史参考） |
+| `report-v1.md` | L1 分析中间层（**仅本地**，含真实语料） |
 | [l1-analysis-v1.md](./l1-analysis-v1.md) | intake → L1 prompt |
 | [product-a-from-l1.md](./product-a-from-l1.md) | L1 → 产物 A prompt |
 | [product-b-from-l1.md](./product-b-from-l1.md) | L1 → 产物 B prompt |
@@ -31,13 +31,16 @@
 
 ---
 
-## 金样输出（迁移前快照）
+## 金样输出（迁移前快照 · 仅本地）
+
+> 下列文件含真实 persona 语料，**不上传公开仓库**（见根目录 `.gitignore`）。克隆后需从本地备份恢复。
 
 | 文件 | 说明 |
 | --- | --- |
-| [person-archive-v1-monolith.md](./person-archive-v1-monolith.md) | 旧单体档案 |
-| [analysis-report-v1.md](./analysis-report-v1.md) | 旧产物 A |
-| [analysis-report-v1-prompt-2026-06-14.md](./analysis-report-v1-prompt-2026-06-14.md) | 生成记录 |
-| [person-archive-v1-prompt-2026-06-14.md](./person-archive-v1-prompt-2026-06-14.md) | 生成记录 |
+| `person-archive-v1-monolith.md` | 旧单体档案 |
+| `analysis-report-v1.md` | 旧产物 A |
+| `analysis-report-v1-prompt-2026-06-14.md` | 生成记录 |
+| `person-archive-v1-prompt-2026-06-14.md` | 生成记录 |
+| `report-v1.md` | L1 分析中间层 |
 
-**当前金样**：[samples/persona-v1/](../../samples/persona-v1/)
+**当前金样**（本地）：[samples/persona-v1/](../../samples/persona-v1/) · 见 [samples/README.md](../../samples/README.md)

@@ -19,8 +19,8 @@
 
 | 产出 | 位置 | 说明 |
 | --- | --- | --- |
-| **人物档案文件群** | `samples/persona-v1/` | 8 个 Markdown 文件，按「构成侧面」拆分；每文件 §1 记录 + §2 解读 + §3 开放问题 |
-| **L0 输入金样** | `samples/intake-v1.md` | 手填原始语料，**已冻结**，不再修改 |
+| **人物档案文件群** | `samples/persona-v1/`（**本地金样**） | 8 个 Markdown 文件，按「构成侧面」拆分；每文件 §1 记录 + §2 解读 + §3 开放问题 |
+| **L0 输入金样** | `samples/intake-v1.md`（**本地**） | 手填原始语料，**已冻结**，不再修改 |
 | **问题地图** | `questions/categories/` | 结构化题库，与档案侧面、维度地图对齐 |
 | **设计契约** | `01` · `02` · `design/` | 宪法、认识论本体、阅读顺序、各侧面目录模板 |
 
@@ -65,7 +65,7 @@
 | **认识论** | [02-维度地图-dimensions.md](02-维度地图-dimensions.md) | 看一个人要看哪些维度（§0–§14）；引擎与题库 `mapsTo` 的坐标 |
 | **阅读契约** | [design/00-档案文件群-index.md](design/00-档案文件群-index.md) | 档案文件群怎么读、更新频率、与题库的对应 |
 | **侧面目录** | [design/catalog/](design/catalog/) | 每个文件内 §1/§2/§3 下有哪些节标题 |
-| **金样内容** | [samples/persona-v1/](samples/persona-v1/) | 具体某个人的记录与解读 |
+| **金样内容** | [samples/persona-v1/](samples/persona-v1/)（**仅本地，见 [samples/README.md](samples/README.md)**） | 具体某个人的记录与解读 |
 
 **02 是维度坐标，不是阅读顺序。** 阅读顺序只看 `design/00-档案文件群-index.md`。
 
@@ -138,10 +138,11 @@ personal_archive/
 ├── 01-立意与分析体系.md            # ★ 宪法：立意、原则、文件架构、验收标准
 ├── 02-维度地图-dimensions.md       # ★ 认识论本体 §0–§14
 │
-├── samples/                       # 金样与输入
-│   ├── intake-v1.md               # L0 手填语料（冻结）
-│   ├── intake-v1-clean.md         # 纯答案导出
-│   └── persona-v1/                # ★ 当前核心产出：8 文件档案群
+├── samples/                       # 金样与输入（真实语料仅本地，见 samples/README.md）
+│   ├── README.md                  # 隐私约定与本地目录说明
+│   ├── intake-v1.md               # L0 手填语料（本地）
+│   ├── intake-v1-clean.md         # 纯答案导出（本地）
+│   └── persona-v1/                # 核心产出：8 文件档案群（本地）
 │       ├── 00-总览与导航-overview.md
 │       └── 01–07 各构成侧面
 │
@@ -195,6 +196,8 @@ personal_archive/
 | **[SYNC-CHECKLIST.md](SYNC-CHECKLIST.md)** | 改哪些文件后要检查哪些关联项 | 修改宪法、维度、文件群结构、catalog 时 |
 
 ### 5.2 samples/ · 金样与输入
+
+> **隐私**：真实 intake 与 persona 文件**不上传公开仓库**，仅本地保留。克隆后见 [samples/README.md](samples/README.md) 恢复或重建。
 
 **`intake-v1.md`** — L0 层原始语料。手填问卷答案，含 `{}` 提问工程批注与 `<<>>` 分析批注。已冻结，是 `persona-v1/` 的主要证据来源。
 

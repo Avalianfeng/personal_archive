@@ -63,3 +63,18 @@ questions/bank/inference/**
 # ── experiments · 实验产出 ───────────────────
 experiments/outputs/**
 !experiments/outputs/.gitkeep
+
+# 含真实 intake 语料的 AB 实验快照（protocol / 脚本仍保留在仓库）
+experiments/archive/ab-intake-2026-06-13/prompt-v1-*.md
+experiments/archive/ab-intake-2026-06-13/report-v1-*.md
+
+# ── samples · 个人语料（仅本地，公开仓库不上传）──
+samples/**
+!samples/README.md
+
+# ── archive/reference · 含 persona 真实语料的历史快照 ──
+archive/reference/report-v1.md
+archive/reference/analysis-report-v1.md
+archive/reference/analysis-report-v1-prompt-2026-06-14.md
+archive/reference/person-archive-v1-monolith.md
+archive/reference/person-archive-v1-prompt-2026-06-14.md

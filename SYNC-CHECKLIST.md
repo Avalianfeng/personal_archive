@@ -44,7 +44,7 @@
 
 | 概念 | 当前 | 已废止 |
 | --- | --- | --- |
-| 核心产出 | `samples/persona-v1/` 8 文件群 | 单文件 `person-archive-v1.md` |
+| 核心产出 | `samples/persona-v1/` 8 文件群（**本地金样**） | 单文件 `person-archive-v1.md` |
 | 解读位置 | 各文件 §2 | 独立「产物 A 分析报告」 |
 | 认识论坐标 | `02-维度地图-dimensions.md` | 02 兼作阅读契约 |
 | 阅读顺序 | `design/00-档案文件群-index.md` | — |
