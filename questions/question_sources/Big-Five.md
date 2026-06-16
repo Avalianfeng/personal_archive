@@ -4,7 +4,7 @@
 | --- | --- |
 | 类型 | 量表 + 代码 |
 | 语言 | zh |
-| raw 路径 | [../raw/问题库-001.md](../raw/问题库-001.md) · [../raw/big_five.ts](../raw/big_five.ts) |
+| raw 路径 | [../raw/pending/问题库-001.md](../raw/pending/问题库-001.md) · [../raw/pending/big_five.ts](../raw/pending/big_five.ts) |
 | 整理优先级 | **P3** |
 | 状态 | 待整理 |
 

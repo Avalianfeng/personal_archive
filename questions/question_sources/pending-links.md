@@ -4,7 +4,7 @@
 | --- | --- |
 | 类型 | 链接索引 |
 | 语言 | — |
-| raw 路径 | [../raw/other_info.md](../raw/other_info.md) |
+| raw 路径 | [../raw/pending/other_info.md](../raw/pending/other_info.md) |
 | 整理优先级 | — |
 | 状态 | 链接索引（非题目正文） |
 

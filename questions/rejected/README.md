@@ -50,6 +50,10 @@
 | `corrupted` | 内容损坏，无法恢复 |
 | `incomplete` | 残缺采集（量表不全、选项缺失） |
 | `copy_error` | 错误复制（多量表混杂、网页残留） |
+| `system_unaskable` | 系统无法作为提问方复现（总称） |
+| `intimate_dyadic` | 子类：采访者↔被采访者二元对话题 |
+
+单题汇总见 [system_unaskable.md](./system_unaskable.md)。
 
 ## JSON 淘汰（第二阶段）
 

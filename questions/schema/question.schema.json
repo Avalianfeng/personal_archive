@@ -2,9 +2,10 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://personal-archive.local/questions/question.schema.json",
   "title": "Question",
-  "description": "Compiled question object from categories/*.md (v0.2)",
+  "description": "Compiled question object from categories/*.md (v0.3)",
   "type": "object",
   "required": [
+    "uid",
     "id",
     "category",
     "category_label",
@@ -15,6 +16,10 @@
     "source_file"
   ],
   "properties": {
+    "uid": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}$"
+    },
     "id": {
       "type": "string",
       "pattern": "^Q-(REAL|EMO|DEC|STA|SELF|VAL|OTH)-[0-9]{3}$"
@@ -60,6 +65,7 @@
       "type": "string",
       "enum": ["active", "candidate", "deprecated"]
     },
+    "order": { "type": ["integer", "null"] },
     "superseded_by": { "type": ["string", "null"] },
     "deprecated_reason": { "type": ["string", "null"] },
     "text": { "type": "string", "minLength": 1 },

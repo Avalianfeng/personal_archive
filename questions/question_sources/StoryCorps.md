@@ -4,9 +4,9 @@
 | --- | --- |
 | 类型 | 对话灵感 / 口述 |
 | 语言 | 双语（en + zh） |
-| raw 路径 | [../raw/good question.md](../raw/good%20question.md) |
+| raw 路径 | [../raw/processed/good question.md](../raw/processed/good%20question.md) |
 | 整理优先级 | **P1** |
-| 状态 | 待整理 |
+| 状态 | 已整理（Phase 1 · 2026-06，224 题入 categories） |
 
 ## 简介
 

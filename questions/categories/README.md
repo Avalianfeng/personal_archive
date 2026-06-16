@@ -16,7 +16,7 @@
 改 md 后运行：
 
 ```bash
-python questions/scripts/parse_questions.py
+python questions/scripts/build_questions.py
 ```
 
 **勿用**单独一行的 `---` 作 Markdown 分隔线（会与 frontmatter 混淆）。
@@ -24,9 +24,7 @@ python questions/scripts/parse_questions.py
 ## 流向
 
 ```text
-raw/ → 整理 Agent → categories/
-     → parse_questions.py → generated/
-     → 查重 → duplicates/
+raw/pending/ → 整理 → categories/ → build_questions.py
 ```
 
 题目 `status: deprecated` 仍保留在 categories；**文件级**淘汰进 [rejected/](../rejected/README.md)。

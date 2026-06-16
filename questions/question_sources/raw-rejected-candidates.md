@@ -9,9 +9,9 @@
 
 | raw 文件 | 问题 | 建议处置 |
 | --- | --- | --- |
-| [问题库-004.md](../raw/问题库-004.md) | PANAS 情绪词表 + SWLS 5 题混杂；选项区空白；无来源头 | `rejected/问题库-004-review.md`；放弃或重新采集完整量表 |
-| [问题库-002.md](../raw/问题库-002.md) | 仅标题，空文件 | 跳过整理；可删除或作下一批次占位 |
-| [other_info.md](../raw/other_info.md) | 纯链接 | 不整理；见 [pending-links.md](./pending-links.md) |
+| [问题库-004.md](../raw/processed/问题库-004.md) | PANAS+SWLS 混杂残缺 | ✅ rejected review |
+| [问题库-002.md](../raw/pending/问题库-002.md) | 仅标题，空文件 | 跳过 |
+| [other_info.md](../raw/pending/other_info.md) | 纯链接 | 见 pending-links |
 
 ## Phase 1 首件建议
 

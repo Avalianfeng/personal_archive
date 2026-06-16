@@ -4,7 +4,7 @@
 | --- | --- |
 | 类型 | 叙事访谈 |
 | 语言 | en |
-| raw 路径 | [../raw/The Life Story Interview.md](../raw/The%20Life%20Story%20Interview.md) |
+| raw 路径 | [../raw/pending/The Life Story Interview.md](../raw/pending/The%20Life%20Story%20Interview.md) |
 | 整理优先级 | **P1** |
 | 状态 | 待整理 |
 

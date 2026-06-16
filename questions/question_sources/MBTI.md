@@ -12,10 +12,10 @@
 
 | 文件 | 说明 |
 | --- | --- |
-| [MBTI.js](../raw/MBTI.js) | 完整前端应用，**60 题** + UI；抽取 `MBTI.Data.questions` |
-| [MBTI_2.ts](../raw/MBTI_2.ts) | 经典 A/B 二选一，约 **70 题** |
-| [MBTI_3.ts](../raw/MBTI_3.ts) | MBTI + Big Five 混合 TypeScript |
-| [MBTI_1.js](../raw/MBTI_1.js) | 场景式多选题，带 dimension 分值 |
+| [MBTI.js](../raw/pending/MBTI.js) | 完整前端应用，**60 题** + UI；抽取 `MBTI.Data.questions` |
+| [MBTI_2.ts](../raw/pending/MBTI_2.ts) | 经典 A/B 二选一，约 **70 题** |
+| [MBTI_3.ts](../raw/pending/MBTI_3.ts) | MBTI + Big Five 混合 TypeScript |
+| [MBTI_1.js](../raw/pending/MBTI_1.js) | 场景式多选题，带 dimension 分值 |
 
 ## 整理注意
 

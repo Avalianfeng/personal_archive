@@ -11,7 +11,7 @@
 | 名称 | 来源正式名称 |
 | 类型 | 访谈 / 量表 / 口述史 / intake / 代码 / 链接 |
 | 语言 | zh / en / 双语 / 粤语等 |
-| raw 路径 | 对应 `raw/` 文件 |
+| raw 路径 | `raw/pending/` 或 `raw/processed/` 下对应文件 |
 | 整理优先级 | P1 / P2 / P3 |
 | 状态 | 待整理 / 已整理 / rejected |
 | 备注 | 抽取注意点、版权、残缺说明 |
@@ -38,7 +38,7 @@
 | 卡片 | 优先级 | 状态 |
 | --- | --- | --- |
 | [McAdams Life Story](./McAdams-Life-Story.md) | P1 | 待整理 |
-| [StoryCorps Great Questions](./StoryCorps.md) | P1 | 待整理 |
+| [StoryCorps Great Questions](./StoryCorps.md) | P1 | 已整理 |
 | [Southern Oral History](./Southern-Oral-History.md) | P1 | 待整理 |
 | [Adult Attachment Interview](./AAI-Protocol.md) | P1 | 待整理 |
 | [50 Life Story Questions（博客版）](./50-Life-Story-Questions.md) | P1 | 待整理 |

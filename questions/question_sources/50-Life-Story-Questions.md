@@ -4,7 +4,7 @@
 | --- | --- |
 | 类型 | 叙事访谈清单 |
 | 语言 | 双语（en + zh） |
-| raw 路径 | [../raw/50 Life Story Interview Questions.md](../raw/50%20Life%20Story%20Interview%20Questions.md) |
+| raw 路径 | [../raw/pending/50 Life Story Interview Questions.md](../raw/pending/50%20Life%20Story%20Interview%20Questions.md) |
 | 整理优先级 | **P1** |
 | 状态 | 待整理 |
 
