@@ -25,40 +25,29 @@ Desktop.ini
 **/data/*.db-shm
 **/data/*.db-wal
 
-# ── questions · 编译产物 ──────────────────────
+# ── questions · generated（审计快照 json 入 Git）──
 questions/generated/**
 !questions/generated/README.md
 !questions/generated/.gitkeep
+!questions/generated/questions.json
+!questions/generated/stats.json
+!questions/generated/registries.json
 
-# ── questions · raw 工作队列（只留目录说明）──
-# 根目录遗留文件（应迁入 pending/）
-questions/raw/*
-!questions/raw/README.md
-!questions/raw/pending/
-!questions/raw/processed/
+# ── questions · imports 工作队列 ───────────────
+questions/imports/pending/**
+!questions/imports/pending/README.md
+questions/imports/processed/**
+!questions/imports/processed/README.md
+questions/imports/failed/**
+!questions/imports/failed/README.md
+questions/imports/external/**
+!questions/imports/external/README.md
 
-questions/raw/pending/**
-!questions/raw/pending/README.md
-
-questions/raw/processed/**
-!questions/raw/processed/README.md
-
-# ── questions · 查重报告（只留模板）──────────
-questions/duplicates/**
-!questions/duplicates/README.md
-!questions/duplicates/_template-report.md
-
-# ── questions · 远期占位目录 ──────────────────
-questions/canonical/**
-!questions/canonical/README.md
-
-questions/bank/archive/**
-!questions/bank/archive/README.md
-
-# bank/inference 现阶段只留 README + dimensions.md
-questions/bank/inference/**
-!questions/bank/inference/README.md
-!questions/bank/inference/dimensions.md
+# ── questions · source_library 附件 ───────────
+questions/source_library/attachments/**
+!questions/source_library/attachments/README.md
+!questions/source_library/attachments/pending/README.md
+!questions/source_library/attachments/processed/README.md
 
 # ── experiments · 实验产出 ───────────────────
 experiments/outputs/**

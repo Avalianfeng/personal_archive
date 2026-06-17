@@ -1,30 +1,11 @@
-# categories · 分类问题地图
+# categories/ · 认知导航层
 
-**人类编辑源**。每题 YAML frontmatter 块，编译为 [generated/questions.json](../generated/questions.json)。
+> ⛔ **禁止手动编辑！** 本目录由 `sync_categories.py` 从 `question_registry` 生成。
 
-## 职责
-
-- 问题地图 — 覆盖度优先
-- 允许重复、变体、多来源
-- **浏览轴**：按「这道题问什么」分文件
-- **检索轴**：`tags` / `prerequisites` / `type` / `interaction`（见 [schema/格式规范.md](../schema/格式规范.md)）
-
-## 格式
-
-[schema/格式规范.md](../schema/格式规范.md) v0.4 · [registries/](../registries/README.md) · [问题整理提示词.md](../prompts/问题整理提示词.md)
-
-改 md 后运行：
+改题：
 
 ```bash
-python questions/scripts/build_questions.py
+python questions/qcli.py edit Q-REAL-042 --set subcategory=...
 ```
 
-**勿用**单独一行的 `---` 作 Markdown 分隔线（会与 frontmatter 混淆）。
-
-## 流向
-
-```text
-raw/pending/ → 整理 → categories/ → build_questions.py
-```
-
-题目 `status: deprecated` 仍保留在 categories；**文件级**淘汰进 [rejected/](../rejected/README.md)。
+浏览地图仍可读 md；日常列表用 `qcli list`。

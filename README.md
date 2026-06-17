@@ -21,7 +21,7 @@
 | --- | --- | --- |
 | **人物档案文件群** | `samples/persona-v1/`（**本地金样**） | 8 个 Markdown 文件，按「构成侧面」拆分；每文件 §1 记录 + §2 解读 + §3 开放问题 |
 | **L0 输入金样** | `samples/intake-v1.md`（**本地**） | 手填原始语料，**已冻结**，不再修改 |
-| **问题地图** | `questions/categories/` | 结构化题库，与档案侧面、维度地图对齐 |
+| **问题知识层** | `questions/`（registry + qcli） | 257 题在 DB；`categories/` 为 sync 导航视图 |
 | **设计契约** | `01` · `02` · `design/` | 宪法、认识论本体、阅读顺序、各侧面目录模板 |
 
 ### 1.3 当前不在做什么
@@ -83,15 +83,15 @@
 | L0 输入 | ✅ 冻结 | `samples/intake-v1.md`、`intake-v1-clean.md` |
 | 金样档案群 | ✅ | `samples/persona-v1/` 00–07，已从旧单体迁移 |
 | 旧管线归档 | ✅ | A/B 双产物、L1、单体档案迁入 `archive/reference/` |
-| 问题库基础设施 | ✅ | 整理规范 v0.1、格式规范 v0.4、Builder、uid、registries |
-| 首轮 categories | ✅ | StoryCorps P1 练手后 **209 题 active**；`Q-SELF-001` 保留 |
+| 问题库 V2 知识层 | ✅ | SQLite registry · qcli · ingest · 257 题 migrated |
+| 首轮 categories | ✅ | sync 自 DB；StoryCorps + 50 Life Story |
 
 ### 3.2 进行中
 
 | 模块 | 状态 | 说明 |
 | --- | --- | --- |
-| P1 raw 整理 | 🔧 | McAdams / 口述史 / AAI 等待整理进 `categories/` |
-| 查重机制 | 🔧 | `duplicates/` 文档就绪；首轮查重尚未跑 |
+| P1 source 整理 | 🔧 | McAdams / 口述史 / AAI → `imports/pending` jsonl |
+| 查重机制 | ✅ | `duplicate_scan.py` + qcli review |
 
 ### 3.3 未开始
 
@@ -111,7 +111,9 @@ L0 输入          samples/intake-v1.md（冻结）
        ▼
 档案文件群        samples/persona-v1/（§1 记录 + §2 解读 + §3 开放问题）
        ▲
-问题地图          questions/categories/ ──mapsTo──► 02 维度地图 §14
+问题知识层      question_registry.db ← sync ── categories/（导航）
+       ▲
+source_library + imports → ingest / qcli
 ```
 
 历史中间层 `archive/reference/report-v1.md` 仅作参考，**不是活跃流水线**。
@@ -121,7 +123,7 @@ L0 输入          samples/intake-v1.md（冻结）
 ```text
 ① 输入金样      samples/intake-v1.md           ✅ 冻结
 ② 档案文件群    samples/persona-v1/            ✅ 金样完成，可持续迭代内容
-③ 问题地图      questions/raw → categories/    🔧 Phase 1 整理中
+③ 问题知识层    source_library → registry → categories   ✅ V2 DB + qcli
 ④ 引擎闭环      PersonModel → 渲染多文件        ❌ 远期
 ⑤ Web 采集      表单 / 沉浸式皮肤               ❌ 远期
 ```
@@ -154,22 +156,17 @@ personal_archive/
 │   ├── skip-semantics.md          # 跳过 / 拒答语义
 │   └── engine.md                  # 引擎架构草案（远期路线 ④）
 │
-├── questions/                     # 人物建档问题库
-│   ├── README.md                  # 问题库入口与命令
-│   ├── 整理规范-v0.1.md           # 整理阶段总规范（含批次验收 §21）
-│   ├── schema/                    # 格式规范 v0.4 + JSON Schema
-│   ├── registries/                # prerequisites / tags 标准库（yaml + md）
-│   ├── categories/                # ★ 人类编辑的问题地图（209 active）
-│   ├── raw/                       # 原始材料队列
-│   │   ├── pending/               # 待整理（[Px] / [批次] / [元] 前缀）
-│   │   └── processed/             # 已整理完成
-│   ├── question_sources/          # 来源档案馆（卡片不移动，[状态][Px] 前缀）
-│   ├── generated/                 # build_questions.py 编译产物（gitignore）
-│   ├── duplicates/                # 查重报告
-│   ├── rejected/                  # 淘汰题（含 system_unaskable）
-│   ├── prompts/                   # 整理 / 查重 / registry 审核 Agent 提示词
-│   ├── scripts/                   # build_questions.py 等
-│   └── bank/ · canonical/         # 远期（500+ 题规模后）
+├── questions/                     # 人物建档问题知识层
+│   ├── README.md                  # 入口 · qcli 命令表
+│   ├── qcli.py                    # 日常操纵层
+│   ├── 整理规范-v1.0.md
+│   ├── source_library/            # Level 1 文献馆
+│   ├── question_registry/         # Level 2 SQLite + schema.sql
+│   ├── categories/                # sync 导航（禁止手改）
+│   ├── registries/                # tags/prerequisites yaml
+│   ├── imports/                   # ingest 收件箱
+│   ├── generated/                 # 审计导出（部分 json 入 Git）
+│   ├── prompts/ · scripts/ · schema/ · rejected/
 │
 ├── prompts/                       # 全局 Prompt 目录（暂空；旧版在 archive）
 ├── experiments/                   # 多模型 L1 对比实验（历史方法验证）

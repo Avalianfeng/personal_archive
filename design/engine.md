@@ -87,7 +87,7 @@ plugins/core-intake/
 
 氛围 UI(粒子、音频)仅用于 immersive 类。问卷设计工具(插件工厂)排在最后:档案目录与 Processor 协议未稳定前不做。
 
-**问题库编译**：`questions/generated/questions.json`（由 `questions/scripts/parse_questions.py` 从 categories 生成）为未来插件 `questions.json` 的候选输入；整理阶段不做 mapsTo。
+**问题库导出**：`questions/generated/questions.json`（由 `export_json.py` 从 `question_registry` 生成）为引擎插件候选输入；整理阶段不做 mapsTo。日常维护用 `questions/qcli.py`。
 
 ## 5. 开放决策
 

@@ -1,70 +1,66 @@
-# questions/ · 人物建档问题库
+# questions/ · 人物档案引擎 · 知识层
 
-> **规范**：[整理规范-v0.1.md](./整理规范-v0.1.md) · [schema/格式规范.md](./schema/格式规范.md) v0.4
+> **不是问卷系统** — Level 1 文献馆 + Level 2 题目仓库 + Registry 规则 + categories 导航 + qcli 操纵层。
 
----
+## 唯一入口
+
+| 你是谁 | 命令 |
+| --- | --- |
+| **日常维护** | `python questions/qcli.py ...` |
+| **CI / 全量刷新** | `python questions/scripts/manage.py sync` |
+| **健康检查** | `python questions/qcli.py doctor` |
+| **一次性迁移** | `python questions/scripts/migrate_bootstrap.py --from-categories` |
+| **开发者** | 只 import `questions/scripts/db.py` |
+
+依赖：`pip install -r requirements.txt`（Windows 推荐 Windows Terminal / Git Bash）
+
+## 目录
+
+| 目录 | 层级 | 职责 |
+| --- | --- | --- |
+| `source_library/` | Level 1 | 协议/方法论文献馆 — **永不 bulk 导入 DB** |
+| `question_registry/` | Level 2 | `questions.db` + `schema.sql` |
+| `categories/` | 表现层 | 问题地图（sync 生成，**禁止手改**） |
+| `registries/` | 规则层 | 仅 `*.yaml` 真源 |
+| `imports/` | 收件箱 | jsonl → `ingest.py` |
+| `generated/` | 审计层 | json/stats/查重/audit（部分 json 入 Git） |
+| `qcli.py` | 操纵层 | 浏览/编辑/审查 |
+| `prompts/` | Agent | 整理/查重/审查 |
+| `rejected/` | 来源淘汰 | 不进 DB |
 
 ## 数据流
 
 ```text
-question_sources/     来源档案馆（`[状态][Px]` 前缀，卡片不移动）
-raw/pending/          待整理（`[Px]` / `[批次]` / `[元]` 前缀）
-      ↓ 整理 Agent
-categories/*.md       人类编辑（uid + frontmatter）
-registries/*.yaml     prerequisites / tags 标准库
-      ↓ build_questions.py
-generated/*.json      程序产物（gitignore）
-      ↓ 查重
-duplicates/
-      ↓ raw 移入
-raw/processed/
-rejected/             文件级 + system_unaskable 单题
+source_library → Agent 提炼 → imports/pending → ingest.py → question_registry.db
+                                                              ↓
+                    qcli.py ← sync_categories → categories/*.md
+                          ← export_json / duplicate_scan → generated/
 ```
 
----
+## 写操作契约
 
-## 关键概念
+任何写入 DB：`校验 registries → WRITE → audit.log → sync_categories → export_json`
 
-| 概念 | 说明 |
-| --- | --- |
-| `uid` | 主键（8 hex）；Builder 自动补 |
-| `id` | 人类编号；**删题不重排** |
-| `prerequisites` | 语义严格前提（无此事实则问题不成立）→ [registries/prerequisites.yaml](./registries/prerequisites.yaml) |
-| `tags` | 主题检索（关于什么）→ [registries/tags.yaml](./registries/tags.yaml) |
-| `system_unaskable` | 二元对话题 → rejected，不入 categories |
-| pending/processed | raw 处理队列 |
-
-**边界**：`question_guides/` · `analysis_guides/` 本阶段不做；解读靠运行时 AI + 资料。
-
----
-
-## 目录
-
-| 目录 | 职责 |
-| --- | --- |
-| `schema/` | 格式规范 + JSON Schema |
-| `registries/` | prerequisites / tags 标准库 |
-| `scripts/` | `build_questions.py` |
-| `generated/` | 编译产物（含 `registries.json` 快照） |
-| `categories/` | 问题地图（209 题，StoryCorps P1 后） |
-| `raw/pending/` · `raw/processed/` | 原始材料队列（见 [raw/README.md](./raw/README.md) 前缀规范） |
-| `rejected/` | 淘汰 |
-| `duplicates/` | 查重报告 |
-| `question_sources/` | 来源索引（`[状态][Px]` 文件名前缀） |
-| `canonical/` · `bank/` | 远期 / 500+ 题后 |
-
-整理 Agent **禁止读 02**。
-
----
-
-## 命令
+## 常用命令
 
 ```bash
-python questions/scripts/build_questions.py
-python questions/scripts/build_questions.py --audit-dyadic
-python questions/scripts/build_questions.py --strict-registry
+python questions/qcli.py list --category real --limit 20
+python questions/qcli.py show Q-REAL-042
+python questions/qcli.py edit Q-REAL-042 --set subcategory=家庭与成长
+python questions/qcli.py review --batch 10 --session review_20260616
+python questions/qcli.py registry list tags
+python questions/scripts/ingest.py
+python questions/scripts/manage.py sync --ingest
 ```
 
-Agent：[问题整理提示词.md](./prompts/问题整理提示词.md) · [问题查重提示词.md](./prompts/问题查重提示词.md) · [registry审核提示词.md](./prompts/registry审核提示词.md)
+Bootstrap（新 clone）：
 
-整理批次验收：[整理规范-v0.1.md §二十一](./整理规范-v0.1.md)
+```bash
+pip install -r requirements.txt
+python questions/scripts/init_db.py
+python questions/scripts/migrate_bootstrap.py
+python questions/scripts/sync_categories.py
+python questions/scripts/export_json.py
+```
+
+规范：[整理规范-v1.0.md](./整理规范-v1.0.md) · [schema/格式规范.md](./schema/格式规范.md)

@@ -89,4 +89,4 @@
 
 1. 主整理 Agent 完成题目块后，若需新 registry id，复制本提示词 + 拟增条目 + 触发题。
 2. 子 Agent 只输出审核结论，不直接改仓库（或由主 Agent 按结论改）。
-3. 合并前运行 `python questions/scripts/build_questions.py --strict-registry`。
+3. 合并前运行 `python questions/qcli.py doctor` 确认 registry 引用合法。
