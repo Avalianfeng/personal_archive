@@ -50,9 +50,9 @@ python questions/scripts/manage.py accept --json
 
 ## 整理完成后
 
-1. 回写 `01-文献与来源-Library` 卡片（见 [Library README](../../01-文献与来源-Library/README.md)）
-2. 正文已整理的可保留原位或移 `_archive/`（可选）
-3. 更新 [01-文献与来源-Library/README.md](../../01-文献与来源-Library/README.md) 索引表
+1. 回写来源卡片 **整理记录**（题数、id 范围、processed jsonl 路径）
+2. 将卡片 + 正文 md 移入 [`99-finish-处理完毕/`](../../01-文献与来源-Library/99-finish-处理完毕/README.md)
+3. 由主 Agent 更新 [`Library/README.md`](../../01-文献与来源-Library/README.md) 索引（子 Agent 禁止改）
 
 ---
 
@@ -79,3 +79,35 @@ python questions/scripts/manage.py accept --json
 | 不确定 tag 是否已登记 | **省略**；需要时走 registry 审核 |
 
 宗教/政治**不新开一级分类**；按功能入 `val` / `real` 等，用 tags 检索。
+
+---
+
+## 多 Agent 协作（并行整理 · 串行 accept）
+
+> 详见 [99-实验反馈-Wave1-并行整理-20260620.md](../../01-文献与来源-Library/99-实验反馈-Wave1-并行整理-20260620.md)
+
+**可并行**（每 Agent 独占一来源）：
+
+- 读 Library 卡片 + 正文
+- 写 `05-Imports/01-pending-待入库/{source}-{YYYYMMDD}.jsonl`
+- 回写**本来源**卡片整理记录
+
+**必须串行**（主 Agent / 人类单点）：
+
+- `ingest --dry-run` → `manage accept --json`（SQLite 单写；一文件失败整批卡住）
+- 刷新 `03-generated-审计产物/*`
+- 更新 `01-文献与来源-Library/README.md` 索引表
+
+### 子 Agent 附加约束（复制启动页时粘贴）
+
+```text
+只处理指定来源（一张卡片 + 一篇正文）。
+产出：05-Imports/01-pending-待入库/{Source}-{YYYYMMDD}.jsonl
+量表批次优先 options_ref（qcli registry list options_templates）；无模板则内联 options。
+禁止：manage accept · qcli ingest · 改 02-Views · 改 Library/README.md · 改其他来源卡片。
+完成后回报：题数 · jsonl 路径 · rejected 数。
+```
+
+**推荐编排**：Wave 1 RSES+McAdams ✅ → Wave 2 Southern Oral+AAI ✅ → Wave 3 WHOQOL/MBTI/MMDI（串行，前置清洗）。
+
+**sidecar**：`{source}-{date}.rejected.jsonl` 与主 jsonl 同批产出；`ingest` 自动跳过，验收后随主文件归档至 `02-processed-已入库/`。

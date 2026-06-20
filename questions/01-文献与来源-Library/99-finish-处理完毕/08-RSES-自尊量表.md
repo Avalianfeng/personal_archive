@@ -6,11 +6,20 @@
 | 语言 | zh |
 | raw 路径 | [attachments/pending/自尊量表.md](attachments/pending/%E8%87%AA%E5%B0%8A%E9%87%8F%E8%A1%A8.md) |
 | 整理优先级 | **P2** |
-| 状态 | 待整理 |
+| 状态 | **已整理（2026-06-20）** |
 
 ## 简介
 
 Rosenberg Self-Esteem Scale，10 题，Likert 4 级。含学术说明与第 8 题中文文化适配讨论。
+
+## 整理记录
+
+| 项 | 值 |
+| --- | --- |
+| 入库题数 | **10**（Q-SELF-036 … Q-SELF-045） |
+| 子分类 | **自我欣赏与不足** |
+| jsonl | `05-导入队列-Imports/02-processed-已入库/RSES-20260620_ingested_20260620T151959Z.jsonl` |
+| 批次 | Wave 1 · 与 McAdams 并行整理 → 单点 accept |
 
 ## 整理注意
 

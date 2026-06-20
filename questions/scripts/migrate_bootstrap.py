@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-sys.path.insert(0, str(Path(__file__).resolve().parent / "archive"))
+sys.path.insert(0, str(Path(__file__).resolve().parent / "99-archive-历史"))
 
 import build_questions as bq  # noqa: E402
 from db import (  # noqa: E402

@@ -6,7 +6,7 @@
 
 Inconsistent education subcategory labels:
 
-- `real:教育与求学` (8 questions)
+- `real:教育与求学` (31 questions)
 - `real:education` (1 questions)
 
 ## ID gaps (normal)

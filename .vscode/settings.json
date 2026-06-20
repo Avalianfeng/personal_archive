@@ -1,4 +1,7 @@
 {
   "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
-  "python.analysis.extraPaths": ["${workspaceFolder}/questions/scripts"]
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/questions/scripts",
+    "${workspaceFolder}/questions/scripts/99-archive-历史"
+  ]
 }

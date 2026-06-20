@@ -11,14 +11,18 @@ from itertools import combinations
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-sys.path.insert(0, str(Path(__file__).resolve().parent / "archive"))
 
-import build_questions as bq  # noqa: E402
 from db import fetch_all_questions  # noqa: E402
 from paths import GENERATED_DIR  # noqa: E402
 
 THRESHOLD = 0.85
 STOPWORDS = {"的", "了", "在", "是", "我", "你", "他", "她", "它", "我们", "你们", "他们", "什么", "怎么", "如何", "吗", "呢", "啊"}
+
+
+def normalize_text(text: str) -> str:
+    t = re.sub(r"\s+", "", text.lower())
+    t = re.sub(r"[？?！!。，,、；;：:\"\"''（）()\\[\\]/]", "", t)
+    return t
 
 
 def tokenize(text: str) -> set[str]:
@@ -38,8 +42,8 @@ def jaccard(a: set[str], b: set[str]) -> float:
 
 
 def similarity(q1: dict, q2: dict) -> tuple[float, str]:
-    t1 = bq.normalize_text(q1["text"])
-    t2 = bq.normalize_text(q2["text"])
+    t1 = normalize_text(q1["text"])
+    t2 = normalize_text(q2["text"])
     if t1 == t2:
         return 1.0, "exact_duplicate"
     ratio = SequenceMatcher(None, t1, t2).ratio()
@@ -59,7 +63,7 @@ def duplicate_scan(*, active_only: bool = True) -> dict:
 
     exact: dict[str, list[str]] = {}
     for q in questions:
-        key = bq.normalize_text(q["text"])
+        key = normalize_text(q["text"])
         exact.setdefault(key, []).append(q["id"])
     exact_dups = [
         {"text_normalized": k, "ids": ids}

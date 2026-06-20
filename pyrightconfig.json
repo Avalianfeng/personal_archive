@@ -1,5 +1,8 @@
 {
   "venvPath": ".",
   "venv": ".venv",
-  "extraPaths": ["questions/scripts"]
+  "extraPaths": [
+    "questions/scripts",
+    "questions/scripts/99-archive-历史"
+  ]
 }
