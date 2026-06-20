@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Initialize question_registry/questions.db from schema.sql."""
+"""Initialize 04-存储层-Store/questions.db from schema.sql."""
 
 from __future__ import annotations
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Export question_registry → generated/questions.json, stats.json, registries.json."""
+"""Export 04-存储层-Store → 03-规则与审计-Meta/03-generated-审计产物/."""
 
 from __future__ import annotations
 
@@ -52,22 +52,6 @@ def build_stats(questions: list[dict], include_deprecated: bool = True) -> dict:
     }
 
 
-def export_registries_human_readable(registries: dict) -> None:
-    lines = ["# Registries · human-readable snapshot", "", "> Auto-generated. Edit YAML only.", ""]
-    for name in ("tags", "prerequisites"):
-        raw = registries[name]["raw"]
-        lines.append(f"## {name}")
-        lines.append("")
-        for entry in raw.get("entries") or []:
-            if isinstance(entry, dict) and entry.get("id"):
-                label = entry.get("label") or entry.get("name") or ""
-                lines.append(f"- `{entry['id']}` — {label}")
-        lines.append("")
-    (GENERATED_DIR / "registries_human_readable.md").write_text(
-        "\n".join(lines) + "\n", encoding="utf-8",
-    )
-
-
 def export_json(*, include_deprecated_in_export: bool = False) -> dict:
     GENERATED_DIR.mkdir(parents=True, exist_ok=True)
     questions = fetch_all_questions()
@@ -78,6 +62,7 @@ def export_json(*, include_deprecated_in_export: bool = False) -> dict:
     snapshot = {
         "prerequisites": registries["prerequisites"]["raw"],
         "tags": registries["tags"]["raw"],
+        "options_templates": registries["options_templates"]["raw"],
     }
     stats = build_stats(questions)
 
@@ -90,7 +75,6 @@ def export_json(*, include_deprecated_in_export: bool = False) -> dict:
     (GENERATED_DIR / "registries.json").write_text(
         json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n", encoding="utf-8",
     )
-    export_registries_human_readable(registries)
     set_meta("last_export_at", utc_now())
     set_meta("question_count", str(len(questions)))
     return stats

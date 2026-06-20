@@ -2,27 +2,35 @@
 
 from __future__ import annotations
 
+import copy
 import json
 import secrets
 import sqlite3
 from datetime import datetime, timezone
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
 import yaml
+from jsonschema import Draft202012Validator
 
 from paths import (
     DB_PATH,
     FORBIDDEN_INGEST_ROOTS,
     GENERATED_DIR,
     REGISTRIES_DIR,
+    SCHEMA_DIR,
     SCHEMA_PATH,
     ALLOWED_INGEST_ROOTS,
     IGNORE_EXTENSIONS,
 )
 
+INGEST_SCHEMA_PATH = SCHEMA_DIR / "ingest.schema.json"
+
 VALID_TYPES = {"open", "single", "multi", "scale", "sort", "fill", "agreement"}
 OPTION_TYPES_REQUIRING_OPTIONS = {"agreement", "single", "multi"}
+VALID_CATEGORY_SLUGS = frozenset({"real", "emo", "dec", "sta", "self", "val", "oth"})
+FORBIDDEN_INGEST_FIELDS = frozenset({"difficulty", "mapsTo", "dimension", "trait", "guide"})
 VALID_INTERACTIONS = {
     "story", "self_report", "scenario", "comparison", "rating", "reflection", "future",
 }
@@ -115,14 +123,43 @@ def load_registry(name: str) -> dict[str, Any]:
     }
 
 
+def load_options_templates() -> dict[str, Any]:
+    path = REGISTRIES_DIR / "options_templates.yaml"
+    if not path.exists():
+        return {"version": None, "ids": set(), "by_id": {}, "raw": {"version": 1, "entries": []}}
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise ValueError(f"{path}: registry root must be a mapping")
+    by_id: dict[str, dict[str, Any]] = {}
+    ids: set[str] = set()
+    for entry in data.get("entries") or []:
+        if not isinstance(entry, dict):
+            continue
+        entry_id = entry.get("id")
+        if not entry_id:
+            continue
+        entry_id = str(entry_id)
+        ids.add(entry_id)
+        by_id[entry_id] = entry
+    return {
+        "version": data.get("version"),
+        "ids": ids,
+        "by_id": by_id,
+        "raw": data,
+    }
+
+
 def load_registries() -> dict[str, Any]:
     prereq = load_registry("prerequisites")
     tags = load_registry("tags")
+    options_templates = load_options_templates()
     return {
         "prerequisites": prereq,
         "tags": tags,
+        "options_templates": options_templates,
         "valid_prerequisite_ids": prereq["ids"] | set(prereq["aliases"].values()),
         "valid_tag_ids": tags["ids"],
+        "valid_options_template_ids": options_templates["ids"],
     }
 
 
@@ -143,7 +180,7 @@ def validate_question_refs(
 
 
 def validate_options(options: Any, qtype: str) -> list[str]:
-    """Validate options shape for ingest/sync. See 整理规范-v1.0.md §jsonl 字段契约."""
+    """Validate options shape for ingest/sync. See 00-整理规范-v1.0.md §jsonl 字段契约."""
     errors: list[str] = []
     if options is None:
         if qtype in OPTION_TYPES_REQUIRING_OPTIONS:
@@ -158,7 +195,7 @@ def validate_options(options: Any, qtype: str) -> list[str]:
         if isinstance(opt, str):
             errors.append(
                 f"options[{i}] is a string; use {{\"key\":\"1\",\"text\":\"…\"}} objects "
-                "(see questions/整理规范-v1.0.md §jsonl 字段契约)",
+                "(see questions/03-规则与审计-Meta/00-整理规范-v1.0.md §jsonl 字段契约)",
             )
             continue
         if not isinstance(opt, dict):
@@ -166,6 +203,133 @@ def validate_options(options: Any, qtype: str) -> list[str]:
             continue
         if not str(opt.get("key", "")).strip() or not str(opt.get("text", "")).strip():
             errors.append(f"options[{i}] missing required key or text")
+    return errors
+
+
+@lru_cache(maxsize=1)
+def _ingest_schema_validator() -> Draft202012Validator:
+    schema = json.loads(INGEST_SCHEMA_PATH.read_text(encoding="utf-8"))
+    return Draft202012Validator(schema)
+
+
+def validate_ingest_schema(data: dict[str, Any]) -> list[str]:
+    """JSON Schema validation for resolved ingest records."""
+    validator = _ingest_schema_validator()
+    return [
+        f"{'.'.join(str(p) for p in err.path) or 'root'}: {err.message}"
+        for err in sorted(validator.iter_errors(data), key=lambda e: list(e.path))
+    ]
+
+
+def resolve_ingest_record(
+    raw: dict[str, Any],
+    batch_ctx: dict[str, Any],
+    registries: dict[str, Any],
+) -> tuple[dict[str, Any] | None, list[str]]:
+    """Expand options_ref; inline options take priority."""
+    if raw.get("_meta") is True:
+        return None, []
+
+    errors: list[str] = []
+    resolved = copy.deepcopy(raw)
+    resolved.pop("_meta", None)
+
+    if raw.get("options") is not None:
+        resolved["options"] = raw["options"]
+    else:
+        ref = raw.get("options_ref") or batch_ctx.get("default_options_ref")
+        if ref:
+            template = registries["options_templates"]["by_id"].get(str(ref))
+            if not template:
+                errors.append(f"unknown options_ref: {ref}")
+            else:
+                resolved["options"] = copy.deepcopy(template.get("options") or [])
+
+    resolved.pop("options_ref", None)
+
+    if errors:
+        return None, errors
+    return resolved, []
+
+
+def prepare_ingest_record(
+    raw: dict[str, Any],
+    batch_ctx: dict[str, Any],
+    *,
+    registries: dict[str, Any] | None = None,
+    line: int | None = None,
+) -> tuple[dict[str, Any] | None, list[str]]:
+    """Resolve options_ref, validate shape, return record ready for insert."""
+    prefix = f"line {line}: " if line is not None else ""
+    registries = registries or load_registries()
+
+    if raw.get("_meta") is True:
+        return None, []
+
+    resolved, resolve_errors = resolve_ingest_record(raw, batch_ctx, registries)
+    if resolve_errors:
+        return None, [f"{prefix}{err}" for err in resolve_errors]
+    assert resolved is not None
+
+    errors: list[str] = []
+    for err in validate_ingest_schema(resolved):
+        errors.append(f"{prefix}{err}")
+    for err in validate_ingest_record(resolved, registries=registries, line=line):
+        errors.append(err if err.startswith("line ") else f"{prefix}{err}")
+
+    if errors:
+        return None, errors
+    return resolved, []
+
+
+def validate_ingest_record(
+    data: dict[str, Any],
+    *,
+    registries: dict[str, Any] | None = None,
+    line: int | None = None,
+) -> list[str]:
+    """Validate one jsonl record without writing DB."""
+    prefix = f"line {line}: " if line is not None else ""
+    errors: list[str] = []
+
+    text = data.get("question") or data.get("text")
+    if not text or not str(text).strip():
+        errors.append(f"{prefix}missing question/text")
+
+    for field in ("category", "subcategory"):
+        if not data.get(field) or not str(data[field]).strip():
+            errors.append(f"{prefix}missing required field '{field}'")
+
+    category = data.get("category")
+    if category and category not in VALID_CATEGORY_SLUGS:
+        errors.append(f"{prefix}invalid category '{category}'")
+
+    qtype = data.get("type", "open")
+    if qtype not in VALID_TYPES:
+        errors.append(f"{prefix}invalid type '{qtype}'")
+
+    status = data.get("status", "active")
+    if status not in VALID_STATUS:
+        errors.append(f"{prefix}invalid status '{status}'")
+
+    interaction = data.get("interaction")
+    if interaction is not None and interaction not in VALID_INTERACTIONS:
+        errors.append(f"{prefix}invalid interaction '{interaction}'")
+
+    depth = data.get("depth")
+    if depth is not None and depth not in VALID_DEPTH:
+        errors.append(f"{prefix}invalid depth '{depth}'")
+
+    for field in FORBIDDEN_INGEST_FIELDS:
+        if field in data:
+            errors.append(f"{prefix}forbidden field '{field}'")
+
+    registries = registries or load_registries()
+    for err in validate_question_refs(data.get("tags"), data.get("prerequisites"), registries):
+        errors.append(f"{prefix}{err}" if prefix else err)
+    for err in validate_options(data.get("options"), qtype):
+        errors.append(f"{prefix}{err}" if prefix else err)
+
     return errors
 
 
@@ -311,9 +475,7 @@ def insert_question_record(
     registries: dict[str, Any] | None = None,
 ) -> str:
     registries = registries or load_registries()
-    tags = data.get("tags")
-    prereqs = data.get("prerequisites")
-    errs = validate_question_refs(tags, prereqs, registries)
+    errs = validate_ingest_record(data, registries=registries)
     if errs:
         raise ValueError("; ".join(errs))
 
@@ -324,32 +486,15 @@ def insert_question_record(
         qid = _next_id_for_category(conn, data["category"])
 
     qtype = data.get("type", "open")
-    if qtype not in VALID_TYPES:
-        raise ValueError(f"invalid type '{qtype}'")
     status = data.get("status", "active")
-    if status not in VALID_STATUS:
-        raise ValueError(f"invalid status '{status}'")
     interaction = data.get("interaction")
-    if interaction is not None and interaction not in VALID_INTERACTIONS:
-        raise ValueError(f"invalid interaction '{interaction}'")
     depth = data.get("depth")
-    if depth is not None and depth not in VALID_DEPTH:
-        raise ValueError(f"invalid depth '{depth}'")
 
     text = data.get("question") or data.get("text")
-    if not text or not str(text).strip():
-        raise ValueError("empty question text")
-
-    for field in ("category", "subcategory"):
-        if not data.get(field) or not str(data[field]).strip():
-            raise ValueError(f"missing required field '{field}'")
-
     options = data.get("options")
-    opt_errs = validate_options(options, qtype)
-    if opt_errs:
-        raise ValueError("; ".join(opt_errs))
-
     options_json = json.dumps(options, ensure_ascii=False) if options else None
+    tags = data.get("tags")
+    prereqs = data.get("prerequisites")
 
     conn.execute(
         """INSERT INTO questions (
@@ -408,6 +553,8 @@ def update_question_record(
     text = merged.get("question") or merged.get("text")
     options = merged.get("options")
     options_json = json.dumps(options, ensure_ascii=False) if options else None
+    tags = merged.get("tags")
+    prereqs = merged.get("prerequisites")
 
     conn.execute(
         """UPDATE questions SET
@@ -508,3 +655,5 @@ def post_write_hooks(*, sync: bool = True, export: bool = True) -> None:
     if export:
         from export_json import export_json
         export_json()
+        from export_agent_views import export_agent_views
+        export_agent_views()

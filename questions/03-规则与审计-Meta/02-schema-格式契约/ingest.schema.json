@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://personal-archive.local/questions/ingest.schema.json",
+  "title": "IngestRecord",
+  "description": "Resolved jsonl record for ingest (after options_ref expansion)",
+  "type": "object",
+  "required": ["question", "category", "subcategory", "type"],
+  "properties": {
+    "question": { "type": "string", "minLength": 1 },
+    "text": { "type": "string", "minLength": 1 },
+    "category": {
+      "type": "string",
+      "enum": ["real", "emo", "dec", "sta", "self", "val", "oth"]
+    },
+    "subcategory": { "type": "string", "minLength": 1 },
+    "type": {
+      "type": "string",
+      "enum": ["open", "single", "multi", "scale", "sort", "fill", "agreement"]
+    },
+    "source": { "type": ["string", "null"] },
+    "interaction": {
+      "type": ["string", "null"],
+      "enum": [
+        "story",
+        "self_report",
+        "scenario",
+        "comparison",
+        "rating",
+        "reflection",
+        "future",
+        null
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "candidate", "deprecated"]
+    },
+    "depth": {
+      "type": ["string", "null"],
+      "enum": ["shallow", "medium", "deep", null]
+    },
+    "validation": { "type": "boolean" },
+    "tags": {
+      "type": ["array", "null"],
+      "items": { "type": "string" }
+    },
+    "prerequisites": {
+      "type": ["array", "null"],
+      "items": { "type": "string" }
+    },
+    "related": {
+      "type": ["array", "null"],
+      "items": { "type": "string" }
+    },
+    "options": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["key", "text"],
+        "properties": {
+          "key": { "type": "string" },
+          "text": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "scale_note": { "type": ["string", "null"] },
+    "order": { "type": ["integer", "null"] },
+    "notes": { "type": ["string", "null"] }
+  },
+  "additionalProperties": false
+}

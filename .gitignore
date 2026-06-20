@@ -26,28 +26,28 @@ Desktop.ini
 **/data/*.db-wal
 
 # ── questions · generated（审计快照 json 入 Git）──
-questions/generated/**
-!questions/generated/README.md
-!questions/generated/.gitkeep
-!questions/generated/questions.json
-!questions/generated/stats.json
-!questions/generated/registries.json
+questions/03-规则与审计-Meta/03-generated-审计产物/**
+!questions/03-规则与审计-Meta/03-generated-审计产物/README.md
+!questions/03-规则与审计-Meta/03-generated-审计产物/.gitkeep
+!questions/03-规则与审计-Meta/03-generated-审计产物/questions.json
+!questions/03-规则与审计-Meta/03-generated-审计产物/stats.json
+!questions/03-规则与审计-Meta/03-generated-审计产物/registries.json
+!questions/03-规则与审计-Meta/03-generated-审计产物/health.json
+!questions/03-规则与审计-Meta/03-generated-审计产物/01-agent-Agent视图/
+!questions/03-规则与审计-Meta/03-generated-审计产物/01-agent-Agent视图/**
 
 # ── questions · imports 工作队列 ───────────────
-questions/imports/pending/**
-!questions/imports/pending/README.md
-questions/imports/processed/**
-!questions/imports/processed/README.md
-questions/imports/failed/**
-!questions/imports/failed/README.md
-questions/imports/external/**
-!questions/imports/external/README.md
+questions/05-导入队列-Imports/01-pending-待入库/**
+!questions/05-导入队列-Imports/01-pending-待入库/README.md
+questions/05-导入队列-Imports/02-processed-已入库/**
+!questions/05-导入队列-Imports/02-processed-已入库/README.md
+questions/05-导入队列-Imports/03-failed-失败/**
+!questions/05-导入队列-Imports/03-failed-失败/README.md
+questions/05-导入队列-Imports/04-external-外部工具/**
+!questions/05-导入队列-Imports/04-external-外部工具/README.md
 
-# ── questions · source_library 附件 ───────────
-questions/source_library/attachments/**
-!questions/source_library/attachments/README.md
-!questions/source_library/attachments/pending/README.md
-!questions/source_library/attachments/processed/README.md
+# ── questions · Store DB ───────────────────────
+questions/04-存储层-Store/*.db
 
 # ── experiments · 实验产出 ───────────────────
 experiments/outputs/**
@@ -67,3 +67,7 @@ archive/reference/analysis-report-v1.md
 archive/reference/analysis-report-v1-prompt-2026-06-14.md
 archive/reference/person-archive-v1-monolith.md
 archive/reference/person-archive-v1-prompt-2026-06-14.md
+
+
+# ai 建议
+建议/**

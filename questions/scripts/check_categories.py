@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Detect manual edits to sync-generated categories/*.md."""
+"""Detect manual edits to sync-generated 02-问题地图-Views/*.md."""
 
 from __future__ import annotations
 

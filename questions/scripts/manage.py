@@ -4,124 +4,166 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from db import (  # noqa: E402
-    fetch_all_questions,
-    get_connection,
-    load_registries,
-    validate_options,
-)
-from paths import (  # noqa: E402
-    GENERATED_DIR,
-    IGNORE_EXTENSIONS,
-    IMPORTS_PENDING,
-    SOURCE_LIBRARY_DIR,
-    CATEGORIES_DIR,
-    DB_PATH,
-)
+from db import fetch_all_questions  # noqa: E402
+from health_check import print_health_check, run_health_check  # noqa: E402
+from paths import AGENT_VIEWS_DIR, GENERATED_DIR, IMPORTS_PENDING  # noqa: E402
+
+
+def _run_sync_pipeline(*, with_duplicate_scan: bool = False, batch_delta: dict | None = None) -> dict:
+    from export_agent_views import export_agent_views
+    from export_json import export_json
+    from sync_categories import sync_categories
+
+    sync_categories()
+    export_json()
+    agent_result = export_agent_views(batch_delta=batch_delta)
+
+    if with_duplicate_scan:
+        from duplicate_scan import duplicate_scan
+        duplicate_scan()
+
+    return agent_result
 
 
 def cmd_sync(args: argparse.Namespace) -> int:
-    from ingest import ingest_pending
-    from sync_categories import sync_categories
-    from export_json import export_json
-    from duplicate_scan import duplicate_scan
-
     if args.ingest:
+        from ingest import ingest_pending
         ingest_pending(sync=False, export=False)
-    sync_categories()
-    export_json()
-    duplicate_scan()
-    print("manage sync complete")
+
+    _run_sync_pipeline(with_duplicate_scan=args.with_duplicate_scan)
+
+    if args.json:
+        click_json = {
+            "ok": True,
+            "command": "sync",
+            "with_duplicate_scan": args.with_duplicate_scan,
+            "agent_views": str(AGENT_VIEWS_DIR.relative_to(GENERATED_DIR.parent.parent)).replace("\\", "/"),
+        }
+        print(json.dumps(click_json, ensure_ascii=False, indent=2))
+    else:
+        print("manage sync complete")
     return 0
 
 
 def cmd_check(args: argparse.Namespace) -> int:
-    issues: list[str] = []
-    stale: list[str] = []
-    warnings: list[str] = []
-
-    if not DB_PATH.exists():
-        issues.append(f"Missing database: {DB_PATH}")
+    health_path = GENERATED_DIR / "health.json"
+    if health_path.exists() and getattr(args, "from_cache", False):
+        result = json.loads(health_path.read_text(encoding="utf-8"))
     else:
-        try:
-            conn = get_connection(readonly=True)
-            row = conn.execute("SELECT version FROM schema_version ORDER BY version DESC LIMIT 1").fetchone()
-            conn.close()
-            if not row:
-                issues.append("schema_version empty")
-        except Exception as e:
-            issues.append(f"DB error: {e}")
+        result = run_health_check()
+        result["generated_at"] = result.get("generated_at") or __import__("db").utc_now()
+        GENERATED_DIR.mkdir(parents=True, exist_ok=True)
+        health_path.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
-        qs = fetch_all_questions()
-        for q in qs:
-            qid = q.get("id") or q.get("uid") or "?"
-            for err in validate_options(q.get("options"), q.get("type", "open")):
-                issues.append(f"{qid}: {err}")
+    if getattr(args, "json", False):
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        return 0 if result.get("ok") else 1
+    return print_health_check(result)
 
-        stats_path = GENERATED_DIR / "stats.json"
-        if stats_path.exists():
-            stats = json.loads(stats_path.read_text(encoding="utf-8"))
-            db_total = len(qs)
-            stats_total = stats.get("total_including_deprecated", stats.get("total"))
-            if stats_total != db_total:
-                stale.append(f"stats.json count mismatch: db={db_total} stats={stats_total}")
 
-    manifest = GENERATED_DIR / ".sync_manifest.json"
-    if manifest.exists() and CATEGORIES_DIR.exists():
-        doc = json.loads(manifest.read_text(encoding="utf-8"))
-        for fn, expected in doc.get("files", {}).items():
-            p = CATEGORIES_DIR / fn
-            if p.exists():
-                actual = hashlib.sha256(p.read_text(encoding="utf-8").encode()).hexdigest()
-                if actual != expected:
-                    stale.append(f"categories/{fn} hash drift from manifest")
+def cmd_accept(args: argparse.Namespace) -> int:
+    """Batch acceptance: validate → ingest → sync → doctor."""
+    from ingest import ingest_pending, validate_pending
 
-    if stale:
-        stale.append("hint: run `python questions/scripts/manage.py sync`")
+    source_files: list[str] = []
+    if not args.skip_validate:
+        errors = validate_pending()
+        if errors:
+            for err in errors:
+                print(f"ERROR: {err}", file=sys.stderr)
+            print("Fix jsonl in 05-导入队列-Imports/01-pending-待入库/ then retry.", file=sys.stderr)
+            if args.json:
+                print(json.dumps({"ok": False, "errors": errors}, ensure_ascii=False, indent=2))
+            return 1
+        paths = [
+            p for p in IMPORTS_PENDING.glob("*")
+            if p.is_file() and p.suffix.lower() in {".jsonl", ".json"}
+        ] if IMPORTS_PENDING.exists() else []
+        if not paths:
+            msg = "Nothing to ingest in 05-导入队列-Imports/01-pending-待入库/"
+            print(msg, file=sys.stderr)
+            if args.json:
+                print(json.dumps({"ok": False, "error": msg}, ensure_ascii=False, indent=2))
+            return 1
+        source_files = [p.name for p in paths]
+        if not args.json:
+            print(f"Validated {len(paths)} file(s)")
 
-    if IMPORTS_PENDING.exists():
-        pending = list(IMPORTS_PENDING.glob("*"))
-        pending = [p for p in pending if p.is_file() and p.name != "README.md"]
-        if pending:
-            warnings.append(f"imports/pending has {len(pending)} file(s)")
+    before_ids = {q["id"] for q in fetch_all_questions()}
+    n = ingest_pending(sync=False, export=False)
+    after_ids = {q["id"] for q in fetch_all_questions()}
+    new_ids = sorted(after_ids - before_ids)
 
-    if SOURCE_LIBRARY_DIR.exists():
-        for p in SOURCE_LIBRARY_DIR.rglob("*"):
-            if p.is_file() and p.suffix.lower() in IGNORE_EXTENSIONS:
-                print(f"[info] source_library attachment: {p.relative_to(SOURCE_LIBRARY_DIR)}")
+    batch_delta = {
+        "ingested_count": n,
+        "new_ids": new_ids,
+        "source_files": source_files,
+    }
 
-    try:
-        load_registries()
-    except Exception as e:
-        issues.append(f"registries yaml: {e}")
+    _run_sync_pipeline(
+        with_duplicate_scan=args.with_duplicate_scan,
+        batch_delta=batch_delta,
+    )
 
-    for msg in stale:
-        print(f"STALE: {msg}", file=sys.stderr)
-    for w in warnings:
-        print(f"WARNING: {w}", file=sys.stderr)
-    for i in issues:
-        print(f"ERROR: {i}", file=sys.stderr)
-    if issues:
-        return 1
-    print("manage check OK")
-    return 0
+    health = run_health_check()
+    health_path = GENERATED_DIR / "health.json"
+    GENERATED_DIR.mkdir(parents=True, exist_ok=True)
+    health_path.write_text(json.dumps(health, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    if not args.json:
+        print(f"Ingested {n} record(s)")
+        print("Synced categories + exported json + agent views")
+
+    rc = print_health_check(health) if not args.json else (0 if health["ok"] else 1)
+
+    if args.json:
+        payload = {
+            "ok": health["ok"],
+            "ingested": n,
+            "new_ids": new_ids,
+            "source_files": source_files,
+            "health": health,
+            "agent_views": str(AGENT_VIEWS_DIR.relative_to(GENERATED_DIR.parent.parent)).replace("\\", "/"),
+        }
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
+        return rc
+
+    return rc
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Questions manage")
     sub = parser.add_subparsers(dest="command", required=True)
-    p_sync = sub.add_parser("sync", help="ingest→sync_categories→export_json→duplicate_scan")
-    p_sync.add_argument("--ingest", action="store_true", help="Process imports/pending first")
+
+    p_sync = sub.add_parser("sync", help="sync_categories→export_json→export_agent_views")
+    p_sync.add_argument("--ingest", action="store_true", help="Process 05-导入队列-Imports/01-pending-待入库 first")
+    p_sync.add_argument(
+        "--with-duplicate-scan",
+        action="store_true",
+        help="Also run duplicate_scan (cleanup phase)",
+    )
+    p_sync.add_argument("--json", action="store_true", help="JSON stdout")
     p_sync.set_defaults(func=cmd_sync)
+
     p_check = sub.add_parser("check", help="Health check")
+    p_check.add_argument("--json", action="store_true", help="JSON stdout")
     p_check.set_defaults(func=cmd_check)
+
+    p_accept = sub.add_parser(
+        "accept",
+        help="Batch acceptance: validate pending jsonl → ingest → sync → doctor",
+    )
+    p_accept.add_argument("--skip-validate", action="store_true")
+    p_accept.add_argument("--with-duplicate-scan", action="store_true")
+    p_accept.add_argument("--json", action="store_true", help="JSON stdout")
+    p_accept.set_defaults(func=cmd_accept)
+
     args = parser.parse_args()
     return args.func(args)
 

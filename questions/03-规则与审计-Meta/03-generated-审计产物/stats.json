@@ -1,0 +1,115 @@
+{
+  "total": 357,
+  "total_including_deprecated": 357,
+  "by_category": {
+    "dec": 11,
+    "emo": 58,
+    "oth": 12,
+    "real": 147,
+    "self": 32,
+    "sta": 12,
+    "val": 85
+  },
+  "by_subcategory": {
+    "dec:假设与取舍": 4,
+    "dec:行事风格": 2,
+    "dec:计划性": 1,
+    "dec:决策能力": 1,
+    "dec:坚持性": 1,
+    "dec:冲动性": 1,
+    "dec:任务管理": 1,
+    "emo:孤独与依恋": 1,
+    "emo:情绪表达": 10,
+    "emo:友谊": 5,
+    "emo:亲密关系": 6,
+    "emo:爱情与婚姻": 13,
+    "emo:哀伤与失去": 14,
+    "emo:社交偏好": 1,
+    "emo:情绪体验": 4,
+    "emo:人际关系": 2,
+    "emo:情绪反应": 1,
+    "emo:人际冲突": 1,
+    "oth:对话引导": 1,
+    "oth:缅怀模板": 11,
+    "real:家庭与成长": 52,
+    "real:时间线与事件": 7,
+    "real:教育与求学": 8,
+    "real:education": 1,
+    "real:职业与经历": 14,
+    "real:疾病经历": 1,
+    "real:家族传承": 7,
+    "real:军旅经历": 24,
+    "real:缅怀逝者": 3,
+    "real:司法经历": 7,
+    "real:青少年时期": 7,
+    "real:为人父母": 7,
+    "real:生活方式": 2,
+    "real:生活节奏": 2,
+    "real:行为节奏": 1,
+    "real:社交偏好": 3,
+    "real:工作习惯": 1,
+    "self:他人评价": 2,
+    "self:自我欣赏与不足": 7,
+    "self:自我描述": 13,
+    "self:角色认同": 2,
+    "self:思维方式": 3,
+    "self:兴趣取向": 4,
+    "self:自我调节": 1,
+    "sta:动力与方向": 1,
+    "sta:疾病与身心": 2,
+    "sta:近期状态": 2,
+    "sta:情绪稳定": 4,
+    "sta:自制": 2,
+    "sta:抗压能力": 1,
+    "val:人生教训": 12,
+    "val:人生目标": 8,
+    "val:信仰与信念": 12,
+    "val:底线与原则": 7,
+    "val:个人价值观": 40,
+    "val:社会观点": 4,
+    "val:生活态度": 1,
+    "val:道德信念": 1
+  },
+  "by_source": {
+    "StoryCorps": 209,
+    "50 Life Story Questions": 48,
+    "Big Five (中文)": 60,
+    "PVQ": 40
+  },
+  "by_status": {
+    "active": 357
+  },
+  "by_type": {
+    "open": 257,
+    "agreement": 100
+  },
+  "missing_uid": [],
+  "id_gaps": {
+    "DEC": [
+      1
+    ],
+    "EMO": [
+      1,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      14,
+      15,
+      45
+    ],
+    "SELF": [
+      6,
+      9
+    ],
+    "VAL": [
+      4,
+      21
+    ]
+  },
+  "with_prerequisites": 12,
+  "with_tags": 75
+}

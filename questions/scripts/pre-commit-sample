@@ -1,4 +1,4 @@
 #!/bin/sh
 # Optional pre-commit hook — install: cp questions/scripts/pre-commit-sample .git/hooks/pre-commit
-cd "$(git rev-parse --show-toplevel)" || exit 1
-python questions/scripts/check_categories.py || exit 1
+# chmod +x .git/hooks/pre-commit
+python questions/scripts/pre_commit_check.py || exit 1

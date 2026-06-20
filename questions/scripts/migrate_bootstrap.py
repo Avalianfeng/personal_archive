@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""One-time bootstrap: categories/*.md or questions.json → question_registry.db."""
+"""One-time bootstrap: 02-问题地图-Views/*.md or questions.json → question_registry.db."""
 
 from __future__ import annotations
 

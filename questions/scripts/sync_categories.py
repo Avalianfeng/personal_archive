@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sync question_registry → categories/*.md (read-only navigation layer)."""
+"""Sync 04-存储层-Store → 02-问题地图-Views/*.md (read-only navigation layer)."""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from db import fetch_all_questions, set_meta, utc_now  # noqa: E402
 from paths import CATEGORIES_DIR, FILE_TO_CATEGORY, GENERATED_DIR  # noqa: E402
 
-POISON_TEMPLATE = """<!-- ⛔ 禁止手动编辑！本文件由 sync_categories.py 从 question_registry 生成。
+POISON_TEMPLATE = """<!-- ⛔ 禁止手动编辑！本文件由 sync_categories.py 从 04-存储层-Store 生成。
      改题请用: python questions/qcli.py edit ...
      上次同步: {sync_time} · manifest: {manifest_hash} -->
 """

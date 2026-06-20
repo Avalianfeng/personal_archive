@@ -1,0 +1,25 @@
+# options_templates · 量表选项模板（机器可读）
+# Agent 写入 jsonl 时用 options_ref 引用，避免每行重复 options
+# 查看：qcli registry list options_templates
+
+version: 1
+
+entries:
+  - id: portrait_6l_zh
+    label: Portrait 6级（完全不像我 → 非常像我）
+    options:
+      - { key: "1", text: "完全不像我" }
+      - { key: "2", text: "不太像我" }
+      - { key: "3", text: "有一点像我" }
+      - { key: "4", text: "较为像我" }
+      - { key: "5", text: "像我" }
+      - { key: "6", text: "非常像我" }
+
+  - id: likert_5l_agree_zh
+    label: Likert 5级（非常不同意 → 非常同意）
+    options:
+      - { key: "1", text: "非常不同意" }
+      - { key: "2", text: "不同意" }
+      - { key: "3", text: "中立" }
+      - { key: "4", text: "同意" }
+      - { key: "5", text: "非常同意" }
